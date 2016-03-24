@@ -1,9 +1,10 @@
-package studio.androiddev.puzzle;
+package studio.androiddev.puzzle.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import studio.androiddev.puzzle.R;
+
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
