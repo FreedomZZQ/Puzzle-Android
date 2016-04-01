@@ -26,4 +26,9 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile files('libs/gson-2.4.jar')
+
+    //bmob-sdk ：Bmob的android sdk包
+    compile 'cn.bmob.android:bmob-sdk:3.4.5'
+
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
 }
