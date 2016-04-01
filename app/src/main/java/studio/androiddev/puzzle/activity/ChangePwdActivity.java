@@ -15,7 +15,7 @@ import studio.androiddev.puzzle.model.User;
 import studio.androiddev.puzzle.utils.SecurityUtils;
 import studio.androiddev.puzzle.utils.StaticValue;
 
-public class ChangePwdActivity extends AppCompatActivity {
+public class ChangePwdActivity extends BaseActivity {
 
     EditText met_oldPwd,met_newPwd,met_conformPwd;
     Button mbtn_confirmChangePwd;

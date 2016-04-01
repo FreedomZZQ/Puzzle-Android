@@ -1,14 +1,15 @@
 package studio.androiddev.puzzle.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import java.util.List;
+
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
@@ -18,7 +19,7 @@ import studio.androiddev.puzzle.utils.RegExUtil;
 import studio.androiddev.puzzle.utils.SecurityUtils;
 import studio.androiddev.puzzle.utils.StaticValue;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     EditText met_phone,met_pwd;
     Button mbtn_login,mbtn_register;
