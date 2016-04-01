@@ -15,7 +15,7 @@ import studio.androiddev.puzzle.model.User;
 import studio.androiddev.puzzle.utils.RegExUtil;
 import studio.androiddev.puzzle.utils.SecurityUtils;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 
     Button mbtn_reg;
     EditText met_phone;

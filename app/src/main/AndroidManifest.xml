@@ -20,9 +20,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activity.MainActivity" />
         <activity
-            android:name=".activity.BaseActivity"
-            android:label="@string/title_activity_base"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activity.BaseActivity"/>
         <activity
             android:name=".activity.LoginActivity"
             android:launchMode="singleInstance"
