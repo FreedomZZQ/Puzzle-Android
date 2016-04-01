@@ -1,5 +1,6 @@
 package studio.androiddev.puzzle.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import butterknife.OnClick;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
+import studio.androiddev.puzzle.PuzzleApplication;
 import studio.androiddev.puzzle.R;
 import studio.androiddev.puzzle.model.User;
 import studio.androiddev.puzzle.utils.RegExUtil;
@@ -137,10 +139,17 @@ public class LoginActivity extends BaseActivity {
                                     String pwd_MD5_Bmob = list.get(0).getPwd();
                                     String pwd_MD5_Local = SecurityUtils.MD5_secure(pwd);
                                     if (pwd_MD5_Bmob.equals(pwd_MD5_Local)) {
-                                        Intent intent = new Intent(LoginActivity.this, UserInfoActivity.class);
-                                        intent.putExtra("user", list.get(0));// 向下一Activity传递用户信息类
-                                        met_pwd.setText("");
-                                        startActivity(intent);
+                                        //登陆成功后要做三件事：
+                                        //1.更新Application中的User
+                                        //2.启动MainActivity
+                                        //3.finish掉LoginActivity
+                                        PuzzleApplication.setmUser(list.get(0));
+                                        MainActivity.actionStart(LoginActivity.this);
+                                        LoginActivity.this.finish();
+//                                        Intent intent = new Intent(LoginActivity.this, UserInfoActivity.class);
+//                                        intent.putExtra("user", list.get(0));// 向下一Activity传递用户信息类
+//                                        met_pwd.setText("");
+//                                        startActivity(intent);
                                     } else {
                                         Toast.makeText(LoginActivity.this, "输入密码错误，请重新输入！", Toast.LENGTH_SHORT).show();
                                     }
@@ -164,5 +173,10 @@ public class LoginActivity extends BaseActivity {
                 }
                 break;
         }
+    }
+
+    public static void actionStart(Context context){
+        Intent intent = new Intent(context, LoginActivity.class);
+        context.startActivity(intent);
     }
 }

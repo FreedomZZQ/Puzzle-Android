@@ -1,5 +1,6 @@
 package studio.androiddev.puzzle.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -115,5 +116,11 @@ public class ChangePwdActivity extends BaseActivity {
         } else {
             Toast.makeText(ChangePwdActivity.this, "原密码输入错误，请重新输入！", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public static void actionStart(Activity context, User loginUser){
+        Intent intent = new Intent(context, ChangePwdActivity.class);
+        intent.putExtra("key", loginUser);
+        context.startActivityForResult(intent, 1234);
     }
 }

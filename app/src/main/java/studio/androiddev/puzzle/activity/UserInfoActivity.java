@@ -33,6 +33,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
@@ -45,15 +48,31 @@ public class UserInfoActivity extends BaseActivity {
     private static int CAMERA_REQUEST_CODE = 1;
     private static int GALLERY_REQUEST_CODE = 2;
     private static int CROP_REQUEST_CODE = 3;
+    @Bind(R.id.fresco_logo)
+    ImageView imageView;
+    @Bind(R.id.et_nickname)
+    EditText met_nickname;
+    @Bind(R.id.met_phone_userinfo)
+    EditText met_phone;
+    @Bind(R.id.et_mail)
+    EditText met_mail;
+    @Bind(R.id.et_rank)
+    EditText met_rank;
+    @Bind(R.id.lv_record)
+    ListView lv_record;
+    @Bind(R.id.btn_changePwd)
+    Button mbtn_changePwd;
+    @Bind(R.id.btn_exitAccount)
+    Button mbtn_exit;
 
 
     private User user_login; //登陆者账号信息
-    EditText met_phone, met_mail, met_rank, met_nickname;
-    Button mbtn_changePwd, mbtn_exit;
+    //    EditText met_phone, met_mail, met_rank, met_nickname;
+//    Button mbtn_changePwd, mbtn_exit;
     View inflate;//解析AlertDialog内部布局的view
     AlertDialog alertDialog; //更换头像时弹出的对话框
-    ListView lv_record;
-    ImageView imageView;
+    //    ListView lv_record;
+//    ImageView imageView;
     List<Record> mRecordSet;
 
     RecordAdapter mAdapter;
@@ -62,6 +81,7 @@ public class UserInfoActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
+        ButterKnife.bind(this);
         initView();//实例化控件
         user_login = (User) getIntent().getSerializableExtra("user");
         setInfo();//为各个控件填充信息
@@ -105,23 +125,23 @@ public class UserInfoActivity extends BaseActivity {
             }
         });
 
-        mbtn_changePwd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(UserInfoActivity.this, ChangePwdActivity.class);
-                intent.putExtra("key", user_login);
-                startActivityForResult(intent, 1234);
-            }
-        });
-
-        mbtn_exit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(UserInfoActivity.this,LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+//        mbtn_changePwd.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(UserInfoActivity.this, ChangePwdActivity.class);
+//                intent.putExtra("key", user_login);
+//                startActivityForResult(intent, 1234);
+//            }
+//        });
+//
+//        mbtn_exit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(UserInfoActivity.this, LoginActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
 
     }
 
@@ -241,19 +261,19 @@ public class UserInfoActivity extends BaseActivity {
 
 
     private void initView() {
-        met_mail = (EditText) findViewById(R.id.et_mail);
-        met_nickname = (EditText) findViewById(R.id.et_nickname);
-        met_rank = (EditText) findViewById(R.id.et_rank);
-        met_phone = (EditText) findViewById(R.id.met_phone_userinfo);
-        mbtn_changePwd = (Button) findViewById(R.id.btn_changePwd);
-        mbtn_exit = (Button) findViewById(R.id.btn_exitAccount);
-        lv_record = (ListView) findViewById(R.id.lv_record);
+//        met_mail = (EditText) findViewById(R.id.et_mail);
+//        met_nickname = (EditText) findViewById(R.id.et_nickname);
+//        met_rank = (EditText) findViewById(R.id.et_rank);
+//        met_phone = (EditText) findViewById(R.id.met_phone_userinfo);
+//        mbtn_changePwd = (Button) findViewById(R.id.btn_changePwd);
+//        mbtn_exit = (Button) findViewById(R.id.btn_exitAccount);
+//        lv_record = (ListView) findViewById(R.id.lv_record);
         met_mail.setEnabled(false);
         met_rank.setEnabled(false);
         met_phone.setEnabled(false);
         met_nickname.setEnabled(false);
         met_rank.setText("第一名");
-        imageView = (ImageView) findViewById(R.id.fresco_logo);
+//        imageView = (ImageView) findViewById(R.id.fresco_logo);
     }
 
 
@@ -339,9 +359,9 @@ public class UserInfoActivity extends BaseActivity {
             });
 
         } else if (requestCode == 1234) {
-            if(data==null){
+            if (data == null) {
 
-            }else{
+            } else {
                 User mReUser = (User) data.getSerializableExtra("reuser");
                 user_login = mReUser;
             }
@@ -391,6 +411,24 @@ public class UserInfoActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @OnClick({R.id.btn_changePwd, R.id.btn_exitAccount})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_changePwd:
+//                Intent intent = new Intent(UserInfoActivity.this, ChangePwdActivity.class);
+//                intent.putExtra("key", user_login);
+//                startActivityForResult(intent, 1234);
+                ChangePwdActivity.actionStart(UserInfoActivity.this, user_login);
+                break;
+            case R.id.btn_exitAccount:
+//                Intent intent = new Intent(UserInfoActivity.this, LoginActivity.class);
+//                startActivity(intent);
+                LoginActivity.actionStart(UserInfoActivity.this);
+                finish();
+                break;
+        }
     }
 
 
