@@ -24,7 +24,7 @@
                 android:id="@+id/fresco_logo"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/pic_userlogo"/>
+                android:src="@drawable/ic_launcher"/>
 
 
             <EditText

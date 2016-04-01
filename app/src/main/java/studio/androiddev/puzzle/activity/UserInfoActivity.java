@@ -347,8 +347,13 @@ public class UserInfoActivity extends AppCompatActivity {
             });
 
         } else if (requestCode == 1234) {
-            User mReUser = (User) data.getSerializableExtra("reuser");
-            user_login = mReUser;
+            if(data==null){
+
+            }else{
+                User mReUser = (User) data.getSerializableExtra("reuser");
+                user_login = mReUser;
+            }
+
         }
 
     }
