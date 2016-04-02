@@ -1,5 +1,6 @@
 package studio.androiddev.puzzle.activity;
 
+//<<<<<<< HEAD
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -7,10 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
+import android.content.Context;
+import android.content.Intent;
+import android.view.KeyEvent;
+import android.widget.Button;
+import android.widget.Toast;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import studio.androiddev.puzzle.R;
 import studio.androiddev.puzzle.adapter.DragAdapter;
 import studio.androiddev.puzzle.intfc.onMoveListener;
@@ -18,136 +23,60 @@ import studio.androiddev.puzzle.ui.DragGridView;
 
 public class MainActivity extends BaseActivity {
 
-    private DragGridView dragSortGridView;
-    private ColorAdapter colorAdapter;
+    @Bind(R.id.beginButton)
+    Button beginButton;
+    @Bind(R.id.rankButton)
+    Button rankButton;
+    @Bind(R.id.settingButton)
+    Button settingButton;
+    @Bind(R.id.exitButton)
+    Button exitButton;
 
-    class TestData {
-        int color;
-        int text;
-        public  TestData(){
-            this.color=0;
-            this.text=0;
-        }
-        public  TestData(int color,int text)
-        {
-            this.color=color;
-            this.text=text;
-        };
-    }
+    //用于记录两次按下返回键的间隔
+    private long exitTime = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+    }
 
-        List<TestData> list = new ArrayList<TestData>();
-
-        for (int i = 0; i < 16; i++) {
-            TestData data = new TestData();
-            Random random = new Random();
-            data.color = Color.rgb(random.nextInt(0xff), random.nextInt(0xff),
-                    random.nextInt(0xff));
-            data.text = i;
-            list.add(data);
+    @OnClick({R.id.beginButton, R.id.rankButton, R.id.settingButton, R.id.exitButton})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.beginButton:
+                GameActivity.actionStart(MainActivity.this);
+                break;
+            case R.id.rankButton:
+                RankActivity.actionStart(MainActivity.this);
+                break;
+            case R.id.settingButton:
+                SettingActivity.actionStart(MainActivity.this);
+                break;
+            case R.id.exitButton:
+                ActivityManager.finishAll();
+                break;
         }
-        for(int i=0;i<16;i++)
-        {
-            Random random=new Random();
-            int temp=random.nextInt(16);
-            TestData data=list.remove(temp);
-            //TestData data1=new TestData(data.color,data.text);
-            list.add(15,data);
-        }
-        colorAdapter = new ColorAdapter();
-        colorAdapter.setList(list);
+    }
 
-        dragSortGridView = (DragGridView) findViewById(R.id.dragSortGridView1);
-        dragSortGridView.setAdapter(colorAdapter);
-        colorAdapter.setmOnMoveListener(dragSortGridView);
-        dragSortGridView.setAppearingDrawable(R.drawable.appearing);
-        dragSortGridView.setDisappearingDrawable(R.drawable.disappearing);
-
-     }
-
-class ColorAdapter extends DragAdapter {
-
-        private List<TestData> list;
-        private onMoveListener mOnMoveListener;
-        public void setmOnMoveListener(onMoveListener listener){
-            this.mOnMoveListener=listener;
-        }
-        public void setList(List<TestData> list) {
-            this.list = list;
-        }
-
-        @Override
-        public int getCount() {
-            return list.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return list.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                TextView textView = new TextView(parent.getContext());
-                textView.setGravity(Gravity.CENTER);
-                textView.setMinHeight(200);
-                convertView = textView;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            //在两秒内两次按下返回键退出程序
+            if((System.currentTimeMillis() - exitTime) > 2000){
+                Toast.makeText(MainActivity.this, getString(R.string.click_again_to_exit), Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            }else{
+                ActivityManager.finishAll();
             }
-            TextView textView = (TextView) convertView;
-            TestData data = (TestData) getItem(position);
-            textView.setBackgroundColor(data.color);
-            textView.setText("" + data.text);
-            return convertView;
+            return true;
         }
+        return super.onKeyDown(keyCode, event);
+    }
 
-        @Override
-        public void onReOrderContent(int fromPos, int toPos,boolean swap) {
-            if(swap==false) {
-                TestData data = list.remove(fromPos);
-                /*if (fromPos > toPos) {
-                    for (int i = fromPos; i > toPos; i--) {
-                        if (mOnMoveListener != null) {
-                            mOnMoveListener.onMove(i-1, i);
-                        }
-                        list.set(i, list.get(i - 1));
-                    }
-                }
-                else{
-                    for (int i = fromPos; i < toPos; i++) {
-                        if (mOnMoveListener != null) {
-                            mOnMoveListener.onMove(i+1, i);
-                        }
-                        list.set(i, list.get(i + 1));
-                    }
-                }*/
-                list.add(toPos, data);
-
-            }
-            else{
-                TestData data1=list.get(fromPos);
-                TestData data2=list.get(toPos);
-                list.set(toPos,data1);
-                list.set(fromPos,data2);
-            }
-            notifyDataSetChanged();
-        }
-        @Override
-        public boolean isOrdered()
-        {
-            for(int i=0;i<getCount();i++)
-            {
-                if(list.get(i).text!=i) return false;
-            }
-            return  true;
-        }
-   }
+    public static void actionStart(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        context.startActivity(intent);
+    }
 }
