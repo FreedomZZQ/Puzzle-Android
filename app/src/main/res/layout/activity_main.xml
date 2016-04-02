@@ -9,8 +9,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".activity.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+    <studio.androiddev.puzzle.ui.DragGridView
+        android:id="@+id/dragSortGridView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:background="#FFFFFFFF"
+        android:numColumns="4" >
+    </studio.androiddev.puzzle.ui.DragGridView>
 </RelativeLayout>
