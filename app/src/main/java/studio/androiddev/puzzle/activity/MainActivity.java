@@ -1,12 +1,8 @@
 package studio.androiddev.puzzle.activity;
 
 //<<<<<<< HEAD
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,9 +13,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import studio.androiddev.puzzle.R;
-import studio.androiddev.puzzle.adapter.DragAdapter;
-import studio.androiddev.puzzle.intfc.onMoveListener;
-import studio.androiddev.puzzle.ui.DragGridView;
 
 public class MainActivity extends BaseActivity {
 

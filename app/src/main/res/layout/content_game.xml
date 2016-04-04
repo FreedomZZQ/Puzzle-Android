@@ -12,13 +12,30 @@
     tools:context="studio.androiddev.puzzle.activity.GameActivity"
     tools:showIn="@layout/activity_game">
 
-    <studio.androiddev.puzzle.ui.DragGridView
-        android:id="@+id/dragSortGridView1"
+
+    <ImageView
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:id="@+id/dish"
+        android:layout_marginBottom="20dp"
+        android:layout_above="@+id/viewContainer"
+        android:layout_centerHorizontal="true"/>
+
+
+    <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
-        android:background="#FFFFFFFF"
-        android:numColumns="4" >
-    </studio.androiddev.puzzle.ui.DragGridView>
+        android:layout_height="100dp"
+        android:id="@+id/viewContainer"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/layViewContainer"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+        </LinearLayout>
+
+    </HorizontalScrollView>
 
 </RelativeLayout>

@@ -16,6 +16,7 @@
         android:hint="账号"
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
+        android:text="18819487507"
         />
 
     <EditText
@@ -26,6 +27,7 @@
         android:hint="密码"
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
+        android:text="26549848binnib"
         />
 
     <LinearLayout
