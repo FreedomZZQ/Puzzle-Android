@@ -18,7 +18,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <!--<activity android:name=".activity.BaseActivity" />-->
         <activity
             android:name=".activity.LoginActivity"

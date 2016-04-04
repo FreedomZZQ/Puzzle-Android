@@ -19,7 +19,8 @@
         android:id="@+id/dish"
         android:layout_marginBottom="20dp"
         android:layout_above="@+id/viewContainer"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorPrimary"/>
 
 
     <HorizontalScrollView

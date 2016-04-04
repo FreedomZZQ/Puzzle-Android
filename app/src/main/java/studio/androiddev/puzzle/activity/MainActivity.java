@@ -1,14 +1,17 @@
 package studio.androiddev.puzzle.activity;
 
 //<<<<<<< HEAD
-import android.os.Bundle;
-import android.view.View;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -24,6 +27,10 @@ public class MainActivity extends BaseActivity {
     Button settingButton;
     @Bind(R.id.exitButton)
     Button exitButton;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.userButton)
+    ImageButton userButton;
 
     //用于记录两次按下返回键的间隔
     private long exitTime = 0;
@@ -33,6 +40,9 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+
     }
 
     @OnClick({R.id.beginButton, R.id.rankButton, R.id.settingButton, R.id.exitButton})
@@ -54,13 +64,13 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event){
-        if(keyCode == KeyEvent.KEYCODE_BACK){
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             //在两秒内两次按下返回键退出程序
-            if((System.currentTimeMillis() - exitTime) > 2000){
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
                 Toast.makeText(MainActivity.this, getString(R.string.click_again_to_exit), Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
-            }else{
+            } else {
                 ActivityManager.finishAll();
             }
             return true;
@@ -71,5 +81,10 @@ public class MainActivity extends BaseActivity {
     public static void actionStart(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
         context.startActivity(intent);
+    }
+
+    @OnClick(R.id.userButton)
+    public void onClick() {
+        UserInfoActivity.actionStart(MainActivity.this);
     }
 }

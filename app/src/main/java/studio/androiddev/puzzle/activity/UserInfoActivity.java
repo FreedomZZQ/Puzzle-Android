@@ -39,6 +39,7 @@ import butterknife.OnClick;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
+import studio.androiddev.puzzle.PuzzleApplication;
 import studio.androiddev.puzzle.R;
 import studio.androiddev.puzzle.model.Record;
 import studio.androiddev.puzzle.model.User;
@@ -67,14 +68,9 @@ public class UserInfoActivity extends BaseActivity {
 
 
     private User user_login; //登陆者账号信息
-    //    EditText met_phone, met_mail, met_rank, met_nickname;
-//    Button mbtn_changePwd, mbtn_exit;
     View inflate;//解析AlertDialog内部布局的view
     AlertDialog alertDialog; //更换头像时弹出的对话框
-    //    ListView lv_record;
-//    ImageView imageView;
     List<Record> mRecordSet;
-
     RecordAdapter mAdapter;
 
     @Override
@@ -83,9 +79,9 @@ public class UserInfoActivity extends BaseActivity {
         setContentView(R.layout.activity_user_info);
         ButterKnife.bind(this);
         initView();//实例化控件
-        user_login = (User) getIntent().getSerializableExtra("user");
+        user_login = PuzzleApplication.getmUser();
         setInfo();//为各个控件填充信息
-        mRecordSet = new ArrayList<Record>();
+        mRecordSet = new ArrayList<>();
         for (int i = 1; i < 7; i++) {
             Record temp = new Record();
             String type_t = i + " x " + i;
@@ -125,23 +121,6 @@ public class UserInfoActivity extends BaseActivity {
             }
         });
 
-//        mbtn_changePwd.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(UserInfoActivity.this, ChangePwdActivity.class);
-//                intent.putExtra("key", user_login);
-//                startActivityForResult(intent, 1234);
-//            }
-//        });
-//
-//        mbtn_exit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(UserInfoActivity.this, LoginActivity.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//        });
 
     }
 
@@ -261,19 +240,11 @@ public class UserInfoActivity extends BaseActivity {
 
 
     private void initView() {
-//        met_mail = (EditText) findViewById(R.id.et_mail);
-//        met_nickname = (EditText) findViewById(R.id.et_nickname);
-//        met_rank = (EditText) findViewById(R.id.et_rank);
-//        met_phone = (EditText) findViewById(R.id.met_phone_userinfo);
-//        mbtn_changePwd = (Button) findViewById(R.id.btn_changePwd);
-//        mbtn_exit = (Button) findViewById(R.id.btn_exitAccount);
-//        lv_record = (ListView) findViewById(R.id.lv_record);
         met_mail.setEnabled(false);
         met_rank.setEnabled(false);
         met_phone.setEnabled(false);
         met_nickname.setEnabled(false);
         met_rank.setText("第一名");
-//        imageView = (ImageView) findViewById(R.id.fresco_logo);
     }
 
 
@@ -325,7 +296,6 @@ public class UserInfoActivity extends BaseActivity {
 
                 @Override
                 public void onSuccess() {
-                    // TODO Auto-generated method stub
 //                    Log.i("main", bmobFile.getFileUrl(UserInfoActivity.this));
 
                     user_login.setImgUrl(bmobFile.getFileUrl(UserInfoActivity.this));
@@ -347,13 +317,11 @@ public class UserInfoActivity extends BaseActivity {
 
                 @Override
                 public void onProgress(Integer value) {
-                    // TODO Auto-generated method stub
                     // 返回的上传进度（百分比）
                 }
 
                 @Override
                 public void onFailure(int code, String msg) {
-                    // TODO Auto-generated method stub
                     Log.e("main", "存储头像失败");
                 }
             });
@@ -417,14 +385,9 @@ public class UserInfoActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_changePwd:
-//                Intent intent = new Intent(UserInfoActivity.this, ChangePwdActivity.class);
-//                intent.putExtra("key", user_login);
-//                startActivityForResult(intent, 1234);
                 ChangePwdActivity.actionStart(UserInfoActivity.this, user_login);
                 break;
             case R.id.btn_exitAccount:
-//                Intent intent = new Intent(UserInfoActivity.this, LoginActivity.class);
-//                startActivity(intent);
                 LoginActivity.actionStart(UserInfoActivity.this);
                 finish();
                 break;
@@ -485,4 +448,8 @@ public class UserInfoActivity extends BaseActivity {
         }
     }
 
+    public static void actionStart(Context context){
+        Intent intent = new Intent(context, UserInfoActivity.class);
+        context.startActivity(intent);
+    }
 }
