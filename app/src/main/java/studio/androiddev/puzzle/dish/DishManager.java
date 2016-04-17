@@ -11,7 +11,10 @@ import android.view.DragEvent;
 import android.view.View;
 import android.widget.ImageView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import studio.androiddev.puzzle.PuzzleApplication;
+import studio.androiddev.puzzle.event.PieceMoveSuccessEvent;
 import studio.androiddev.puzzle.utils.DensityUtil;
 
 /**
@@ -30,6 +33,8 @@ public class DishManager{
     private boolean[] mIndex;
     //拼块数目
     private int mSize;
+    //距离游戏胜利还需移动的拼块数目
+    private int mLeftSize;
     //拼盘大小
     private static int DISH_HEIGHT = 300;
     private static int DISH_WIDTH = 300;
@@ -59,6 +64,7 @@ public class DishManager{
         mBitmap = bitmap;
         mLevel = level;
         mSize = level * level;
+        mLeftSize = mSize;
         mIndex = new boolean[mSize];
         for(int i = 0; i < mSize; i++) mIndex[i] = false;
         initMask();
@@ -85,7 +91,11 @@ public class DishManager{
                         break;
                     case DragEvent.ACTION_DROP:
 
-                        judgeDrag(index, x, y);
+                        if(judgeDrag(index, x, y)){
+                            updatePiece(index);
+                            EventBus.getDefault().post(new PieceMoveSuccessEvent(index));
+                        }
+
                         break;
                     default:
                         break;
@@ -111,12 +121,7 @@ public class DishManager{
         int dpX = DensityUtil.px2dip(PuzzleApplication.getAppContext(), x);
         int dpY = DensityUtil.px2dip(PuzzleApplication.getAppContext(), y);
 
-        if(rect.contains(dpX, dpY)){
-            updatePiece(i);
-            return true;
-        }else{
-            return false;
-        }
+        return rect.contains(dpX, dpY);
     }
 
     private RectF getRectF(int i){
@@ -139,7 +144,9 @@ public class DishManager{
         refreshDish();
     }
 
-    //初始化基本拼块
+    /**
+     * 根据拼盘大小和游戏难度初始化基本遮罩拼块
+     */
     private void initMask(){
 
         r = DISH_WIDTH / mLevel / 4;

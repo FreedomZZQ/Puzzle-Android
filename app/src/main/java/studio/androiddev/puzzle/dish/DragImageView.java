@@ -42,4 +42,8 @@ public class DragImageView extends ImageView {
     public void setIndex(int index) {
         mIndex = index;
     }
+
+    public int getIndex(){
+        return mIndex;
+    }
 }

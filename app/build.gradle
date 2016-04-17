@@ -33,4 +33,6 @@ dependencies {
     compile 'cn.bmob.android:bmob-sdk:3.4.5'
 
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+
+    compile 'org.greenrobot:eventbus:3.0.0'
 }

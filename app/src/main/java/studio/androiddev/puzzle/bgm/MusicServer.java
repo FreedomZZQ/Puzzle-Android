@@ -20,17 +20,17 @@ public class MusicServer extends Service {
     private MyBinder myBinder=new MyBinder();
     private int songList[]={R.raw.a, R.raw.b, R.raw.c};
     private int songIndex = 0;
-    @Override   public IBinder onBind(Intent intent) {
-        // TODO Auto-generated method stub
+    @Override
+    public IBinder onBind(Intent intent) {
+
         onStart(intent,0);
         return myBinder;
     }
     @Override
-    public  void onStart(Intent intent,int startId){
-        super.onStart(intent, startId);
+    public int onStartCommand(Intent intent, int flags, int startId){
 
         if(mediaPlayer==null){
-// R.raw.mmp是资源文件，MP3格式的
+        // R.raw.mmp是资源文件，MP3格式的
             try {
                 songplay();
                 mediaPlayer.setOnCompletionListener(new CompletionListener());
@@ -39,6 +39,8 @@ public class MusicServer extends Service {
             }
 
         }
+
+        return super.onStartCommand(intent, flags, startId);
     }
 
     private final class CompletionListener implements MediaPlayer.OnCompletionListener {
@@ -73,13 +75,10 @@ public class MusicServer extends Service {
             mediaPlayer=MediaPlayer.create(this, songList[songIndex]);
             mediaPlayer.start();
         } catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (SecurityException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IllegalStateException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -87,7 +86,6 @@ public class MusicServer extends Service {
 
     @Override
     public void onDestroy() {
-// TODO Auto-generated method stub
         super.onDestroy();
         mediaPlayer.stop();
     }
