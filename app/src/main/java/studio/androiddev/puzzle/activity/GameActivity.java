@@ -29,6 +29,7 @@ import studio.androiddev.puzzle.event.PieceMoveSuccessEvent;
 import studio.androiddev.puzzle.imagesplit.ImagePiece;
 import studio.androiddev.puzzle.imagesplit.ImageSplitter;
 import studio.androiddev.puzzle.utils.BitmapUtils;
+import studio.androiddev.puzzle.utils.GlobalUtils;
 
 public class GameActivity extends BaseActivity {
 
@@ -91,7 +92,7 @@ public class GameActivity extends BaseActivity {
             ImageSplitter IS = new ImageSplitter();
             List<ImagePiece> IPL = IS.split(mBitmap, getResources(), display, mLevel, mLevel);
 
-            for (int i = 0; i < mLevel; i++)
+            for (int i = 0; i < mLevel; i++) {
                 for (int j = 0; j < mLevel; j++) {
                     DragImageView imageView = new DragImageView(this);
                     imageView.setLayoutParams(new LinearLayout.LayoutParams(
@@ -102,14 +103,23 @@ public class GameActivity extends BaseActivity {
                     imageView.setIndex(j + i * mLevel);
                     pieceList.put(imageView.getIndex(), imageView);
 
-                    if (layViewContainer != null) {
-                        layViewContainer.addView(imageView,
-                                new LinearLayout.LayoutParams(
-                                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                                        LinearLayout.LayoutParams.WRAP_CONTENT
-                                ));
-                    }
+
                 }
+            }
+
+            int[] list = GlobalUtils.getRamdomList(mLevel * mLevel);
+
+            if (layViewContainer != null) {
+                for (int aList : list) {
+                    layViewContainer.addView(pieceList.get(aList),
+                            new LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT
+                            ));
+                }
+
+            }
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

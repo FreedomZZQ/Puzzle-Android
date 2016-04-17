@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import org.greenrobot.eventbus.EventBus;
 
 import studio.androiddev.puzzle.PuzzleApplication;
+import studio.androiddev.puzzle.event.GameSuccessEvent;
 import studio.androiddev.puzzle.event.PieceMoveSuccessEvent;
 import studio.androiddev.puzzle.utils.DensityUtil;
 
@@ -67,6 +68,7 @@ public class DishManager{
         mLeftSize = mSize;
         mIndex = new boolean[mSize];
         for(int i = 0; i < mSize; i++) mIndex[i] = false;
+        
         initMask();
 
         imageView.setOnDragListener(new View.OnDragListener() {
@@ -93,7 +95,6 @@ public class DishManager{
 
                         if(judgeDrag(index, x, y)){
                             updatePiece(index);
-                            EventBus.getDefault().post(new PieceMoveSuccessEvent(index));
                         }
 
                         break;
@@ -116,6 +117,14 @@ public class DishManager{
         mLevel = level;
     }
 
+
+    /**
+     * 判断拼块是否被拖动到正确的位置
+     * @param i 拼块下标
+     * @param x 拖动事件x坐标
+     * @param y 拖动事件y坐标
+     * @return 判断结果
+     */
     public boolean judgeDrag(int i, int x, int y){
         RectF rect = getRectF(i);
         int dpX = DensityUtil.px2dip(PuzzleApplication.getAppContext(), x);
@@ -124,6 +133,11 @@ public class DishManager{
         return rect.contains(dpX, dpY);
     }
 
+    /**
+     * 根据拼块下标计算拼块实际占据的方形大小
+     * @param i 拼块下标
+     * @return 拼块实际占据的方形大小
+     */
     private RectF getRectF(int i){
 
         return new RectF(
@@ -142,6 +156,11 @@ public class DishManager{
 
         mIndex[i] = true;
         refreshDish();
+        EventBus.getDefault().post(new PieceMoveSuccessEvent(i));
+        mLeftSize--;
+        if(mLeftSize == 0){
+            EventBus.getDefault().post(new GameSuccessEvent());
+        }
     }
 
     /**
@@ -247,6 +266,10 @@ public class DishManager{
 
     }
 
+    /**
+     * 根据当前游戏进度生成遮罩层
+     * @return 遮罩层Bitmap
+     */
     private Bitmap getMask(){
         Bitmap mask = Bitmap.createBitmap(DISH_WIDTH, DISH_HEIGHT, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(mask);
@@ -321,6 +344,10 @@ public class DishManager{
         return mask;
     }
 
+    /**
+     * 刷新拼盘显示
+     * 首先获取遮罩层，然后将遮罩层与原始图片混合并显示
+     */
     private void refreshDish(){
         if(mBitmap == null) return;
         //获取遮罩层
