@@ -7,7 +7,6 @@ package studio.androiddev.puzzle.bgm;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.os.Binder;
 import android.os.IBinder;
 
 import java.io.IOException;
@@ -17,14 +16,17 @@ import studio.androiddev.puzzle.R;
 public class MusicServer extends Service {
 
     private MediaPlayer mediaPlayer;
-    private MyBinder myBinder=new MyBinder();
     private int songList[]={R.raw.a, R.raw.b, R.raw.c};
     private int songIndex = 0;
     @Override
     public IBinder onBind(Intent intent) {
 
-        onStart(intent,0);
-        return myBinder;
+        return null;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
@@ -84,14 +86,12 @@ public class MusicServer extends Service {
 
     }
 
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         mediaPlayer.stop();
+        mediaPlayer = null;
     }
-    public class MyBinder extends Binder{
-        public MusicServer getService(){
-            return MusicServer.this;
-        }
-    }
+
 }

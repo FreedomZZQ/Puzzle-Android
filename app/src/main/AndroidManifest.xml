@@ -48,6 +48,10 @@
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
+
+        <service android:name=".bgm.MusicServer">
+
+        </service>
     </application>
 
 </manifest>

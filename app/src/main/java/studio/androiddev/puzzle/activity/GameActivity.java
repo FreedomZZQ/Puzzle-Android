@@ -22,6 +22,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import studio.androiddev.puzzle.R;
+import studio.androiddev.puzzle.bgm.MusicServer;
 import studio.androiddev.puzzle.dish.DishManager;
 import studio.androiddev.puzzle.dish.DragImageView;
 import studio.androiddev.puzzle.event.GameSuccessEvent;
@@ -57,6 +58,29 @@ public class GameActivity extends BaseActivity {
         dm = new DishManager(dish, mBitmap, mLevel);
         initialization();
         EventBus.getDefault().register(this);
+
+
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+
+        Intent intent = new Intent(GameActivity.this, MusicServer.class);
+        startService(intent);
+
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        Intent intent = new Intent(GameActivity.this, MusicServer.class);
+        stopService(intent);
 
     }
 
