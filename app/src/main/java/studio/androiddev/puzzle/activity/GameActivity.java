@@ -133,7 +133,7 @@ public class GameActivity extends BaseActivity {
     }
 
     private void initialization() {
-
+        // TODO: 2016/4/19 这里加载时间太长，需要优化！
         layViewContainer.removeAllViews();
         pieceList.clear();
 
