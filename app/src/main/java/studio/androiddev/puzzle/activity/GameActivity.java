@@ -141,6 +141,10 @@ public class GameActivity extends BaseActivity {
                 DISH_WIDTH, DISH_HEIGHT);
         dm = PuzzleApplication.getDishManager();
 
+        if(dm == null) return;
+
+        dm.initNewGame(mBitmap, dish);
+
         Display display = getWindowManager().getDefaultDisplay();
 
         try {
