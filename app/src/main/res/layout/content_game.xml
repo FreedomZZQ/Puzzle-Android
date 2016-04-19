@@ -12,31 +12,47 @@
     tools:context="studio.androiddev.puzzle.activity.GameActivity"
     tools:showIn="@layout/activity_game">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
-    <ImageView
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:id="@+id/dish"
-        android:layout_marginBottom="20dp"
-        android:layout_above="@+id/viewContainer"
-        android:layout_centerHorizontal="true"
-        android:background="@color/colorPrimary"/>
-
-
-    <HorizontalScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:id="@+id/viewContainer"
-        android:layout_alignParentBottom="true">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:id="@+id/gameContainer">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/layViewContainer"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-        </LinearLayout>
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:id="@+id/dish"
+            android:layout_marginBottom="20dp"
+            android:background="@color/colorPrimary"
+            android:layout_gravity="center_horizontal"/>
 
-    </HorizontalScrollView>
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:id="@+id/viewContainer">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/layViewContainer"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+    </LinearLayout>
+
+
+
 
 </RelativeLayout>

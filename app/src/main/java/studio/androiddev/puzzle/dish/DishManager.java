@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import org.greenrobot.eventbus.EventBus;
 
 import studio.androiddev.puzzle.PuzzleApplication;
+import studio.androiddev.puzzle.event.DishManagerInitFinishEvent;
+import studio.androiddev.puzzle.event.DishManagerInitStartEvent;
 import studio.androiddev.puzzle.event.GameSuccessEvent;
 import studio.androiddev.puzzle.event.PieceMoveSuccessEvent;
 import studio.androiddev.puzzle.utils.DensityUtil;
@@ -60,9 +62,10 @@ public class DishManager{
     float width;
     float height;
 
-    public DishManager(ImageView imageView, Bitmap bitmap, int level){
-        mImageView = imageView;
-        mBitmap = bitmap;
+    public DishManager(int level){
+
+
+
         mLevel = level;
         mSize = level * level;
         mLeftSize = mSize;
@@ -70,6 +73,20 @@ public class DishManager{
         for(int i = 0; i < mSize; i++) mIndex[i] = false;
         
         initMask();
+
+
+    }
+
+    /**
+     * 初始化新游戏
+     * @param bitmap 新游戏图片
+     * @param imageView 新游戏的拼盘
+     */
+    public void initNewGame(Bitmap bitmap, ImageView imageView){
+        if(bitmap == null || imageView == null) return;
+
+        mImageView = imageView;
+        mBitmap = bitmap;
 
         imageView.setOnDragListener(new View.OnDragListener() {
             @Override

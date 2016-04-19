@@ -3,6 +3,7 @@ package studio.androiddev.puzzle;
 import android.app.Application;
 import android.content.Context;
 
+import studio.androiddev.puzzle.dish.DishManager;
 import studio.androiddev.puzzle.model.User;
 
 /**
@@ -14,6 +15,8 @@ public class PuzzleApplication extends Application{
     private static Context mContext;
 
     private static User mUser;
+
+    private static DishManager dm;
 
     @Override
     public void onCreate(){
@@ -31,5 +34,13 @@ public class PuzzleApplication extends Application{
 
     public static Context getAppContext(){
         return mContext;
+    }
+
+    public static void initDishManager(int level){
+        dm = new DishManager(level);
+    }
+
+    public static DishManager getDishManager(){
+        return dm;
     }
 }

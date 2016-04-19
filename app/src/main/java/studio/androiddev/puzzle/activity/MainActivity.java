@@ -13,6 +13,7 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import studio.androiddev.puzzle.PuzzleApplication;
 import studio.androiddev.puzzle.R;
 
 public class MainActivity extends BaseActivity {
@@ -40,7 +41,14 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
+        // TODO: 2016/4/19 这里的参数应该是从sharedpreferences中读取
+        PuzzleApplication.initDishManager(4);
 
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
     }
 
     @OnClick({R.id.beginButton, R.id.rankButton, R.id.settingButton, R.id.exitButton})
@@ -60,6 +68,8 @@ public class MainActivity extends BaseActivity {
                 break;
         }
     }
+
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
