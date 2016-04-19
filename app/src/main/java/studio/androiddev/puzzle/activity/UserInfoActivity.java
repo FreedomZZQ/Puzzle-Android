@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,6 +66,8 @@ public class UserInfoActivity extends BaseActivity {
     Button mbtn_changePwd;
     @Bind(R.id.btn_exitAccount)
     Button mbtn_exit;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
 
 
     private User user_login; //登陆者账号信息
@@ -78,6 +81,9 @@ public class UserInfoActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+
         initView();//实例化控件
         user_login = PuzzleApplication.getmUser();
         setInfo();//为各个控件填充信息
@@ -345,7 +351,6 @@ public class UserInfoActivity extends BaseActivity {
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -375,6 +380,9 @@ public class UserInfoActivity extends BaseActivity {
                     });
                 }
             }
+            return true;
+        } else if (item.getItemId() == android.R.id.home) {
+            finish();
             return true;
         }
 
@@ -448,7 +456,8 @@ public class UserInfoActivity extends BaseActivity {
         }
     }
 
-    public static void actionStart(Context context){
+
+    public static void actionStart(Context context) {
         Intent intent = new Intent(context, UserInfoActivity.class);
         context.startActivity(intent);
     }

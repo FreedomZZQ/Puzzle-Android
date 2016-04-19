@@ -201,7 +201,6 @@ public class DishManager{
         RectF ovalRightRight = new RectF(rectWidth, rectHeight / 2 - r, rectWidth + 2 * r, rectHeight / 2 + r);
         RectF ovalBottomRight = new RectF(rectWidth / 2, rectHeight - r, rectWidth / 2 + 2 * r, rectHeight + r);
 
-
         Canvas canvas = new Canvas(bmcover[COVER_TOP_LEFT]);
         canvas.drawRect(0, 0, rectWidth, rectHeight, p);
         canvas.drawArc(ovalRight, 0, 360, true, pOut);
@@ -261,8 +260,6 @@ public class DishManager{
         canvas.drawArc(ovalLeft, 0, 360, true, pOver);
         canvas.drawArc(ovalBottomRight, 0, 360, true, pOver);
         canvas.save();
-
-
 
     }
 

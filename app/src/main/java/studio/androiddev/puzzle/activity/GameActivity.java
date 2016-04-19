@@ -44,6 +44,8 @@ public class GameActivity extends BaseActivity {
     private DishManager dm;
     private Bitmap mBitmap;
     private int mLevel = 4;
+    private static final int DISH_WIDTH = 300;
+    private static final int DISH_HEIGHT = 300;
     private HashMap<Integer, View> pieceList = new HashMap<>();
 
     @Override
@@ -54,11 +56,10 @@ public class GameActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         mBitmap = BitmapUtils.decodeSampledBitmapFromResources(getResources(), R.drawable.default1,
-                300, 300);
+                DISH_WIDTH, DISH_HEIGHT);
         dm = new DishManager(dish, mBitmap, mLevel);
         initialization();
         EventBus.getDefault().register(this);
-
 
     }
 
