@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,8 +15,6 @@ import android.widget.ImageView;
 import org.greenrobot.eventbus.EventBus;
 
 import studio.androiddev.puzzle.PuzzleApplication;
-import studio.androiddev.puzzle.event.DishManagerInitFinishEvent;
-import studio.androiddev.puzzle.event.DishManagerInitStartEvent;
 import studio.androiddev.puzzle.event.GameSuccessEvent;
 import studio.androiddev.puzzle.event.PieceMoveSuccessEvent;
 import studio.androiddev.puzzle.utils.DensityUtil;
@@ -26,6 +25,9 @@ import studio.androiddev.puzzle.utils.DensityUtil;
  * Created by ZQ on 2016/4/3.
  */
 public class DishManager{
+
+    private static final String TAG = "puzzle";
+
     //拼盘
     private ImageView mImageView;
     //游戏难度
@@ -44,28 +46,25 @@ public class DishManager{
 
     //基本款遮罩拼块
     private static Bitmap[] bmcover = new Bitmap[9];
-    private static int COVER_CENTER = 0;
-    private static int COVER_TOP = 1;
-    private static int COVER_BOTTOM = 2;
-    private static int COVER_LEFT = 3;
-    private static int COVER_RIGHT = 4;
-    private static int COVER_TOP_LEFT = 5;
-    private static int COVER_TOP_RIGHT = 6;
-    private static int COVER_BOTTOM_LEFT = 7;
-    private static int COVER_BOTTOM_RIGHT = 8;
+    public static int COVER_CENTER = 0;
+    public static int COVER_TOP = 1;
+    public static int COVER_BOTTOM = 2;
+    public static int COVER_LEFT = 3;
+    public static int COVER_RIGHT = 4;
+    public static int COVER_TOP_LEFT = 5;
+    public static int COVER_TOP_RIGHT = 6;
+    public static int COVER_BOTTOM_LEFT = 7;
+    public static int COVER_BOTTOM_RIGHT = 8;
     //拼块凹凸半径
-    float r;
+    private float r;
     //拼块内的矩形长宽
-    float rectWidth;
-    float rectHeight;
+    private float rectWidth;
+    private float rectHeight;
     //拼块的长宽
     float width;
     float height;
 
     public DishManager(int level){
-
-
-
         mLevel = level;
         mSize = level * level;
         mLeftSize = mSize;
@@ -73,8 +72,6 @@ public class DishManager{
         for(int i = 0; i < mSize; i++) mIndex[i] = false;
         
         initMask();
-
-
     }
 
     /**
@@ -134,6 +131,9 @@ public class DishManager{
         mLevel = level;
     }
 
+    public static Bitmap[] getBitmapCover() {
+        return bmcover;
+    }
 
     /**
      * 判断拼块是否被拖动到正确的位置
@@ -188,6 +188,9 @@ public class DishManager{
         r = DISH_WIDTH / mLevel / 4;
         rectWidth = DISH_WIDTH / mLevel;
         rectHeight = DISH_HEIGHT / mLevel;
+
+        Log.d(TAG, "rectWidth and Height: " + rectWidth);
+
         width = rectWidth + r;
         height = rectHeight + r;
         for(int i = 0; i < 9; i++){
@@ -357,7 +360,6 @@ public class DishManager{
 
         return mask;
     }
-
     /**
      * 刷新拼盘显示
      * 首先获取遮罩层，然后将遮罩层与原始图片混合并显示

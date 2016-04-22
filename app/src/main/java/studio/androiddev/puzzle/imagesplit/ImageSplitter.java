@@ -4,85 +4,121 @@ package studio.androiddev.puzzle.imagesplit;
  * Created by Administrator on 2016/3/27.
  */
 
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.view.Display;
+import android.util.Log;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import studio.androiddev.puzzle.R;
-import studio.androiddev.puzzle.utils.BitmapUtils;
+import studio.androiddev.puzzle.dish.DishManager;
 
 public class ImageSplitter {
 
-    public static List<ImagePiece> split(Bitmap bitmap, Resources rs, Display display,
-                                         int xPiece, int yPiece) throws FileNotFoundException {
-        Bitmap[] bmcover=new Bitmap[9];
-        BitmapUtils bu=new BitmapUtils();
-        bmcover[0]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
-        bmcover[1]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover1, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
-        bmcover[2]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover2, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
-        bmcover[3]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover3, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
-        bmcover[4]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover4, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
-        bmcover[5]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover_left, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
-        bmcover[6]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover_right, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
-        bmcover[7]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover_buttom, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
-        bmcover[8]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover_top, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
-        List<ImagePiece> pieces = new ArrayList<ImagePiece>(xPiece * yPiece);
-        PorterDuffXfermode pdf=new PorterDuffXfermode(PorterDuff.Mode.SRC_IN);
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        int pieceWidth = width / xPiece;
-        int pieceHeight = height /yPiece;
-        int pieceWidth2=bmcover[0].getWidth();
-        int pieceHeight2=bmcover[0].getHeight();
+    private static final String TAG = "puzzle";
+
+    public static List<ImagePiece> split(Bitmap bitmap, int level, int dishWidth, int dishHeight)
+            throws FileNotFoundException {
+        Bitmap[] bmcover = DishManager.getBitmapCover();
+//        Bitmap[] bmcover=new Bitmap[9];
+//        BitmapUtils bu=new BitmapUtils();
+//        bmcover[0]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
+//        bmcover[1]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover1, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
+//        bmcover[2]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover2, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
+//        bmcover[3]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover3, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
+//        bmcover[4]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover4, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
+//        bmcover[5]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover_left, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
+//        bmcover[6]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover_right, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
+//        bmcover[7]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover_buttom, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
+//        bmcover[8]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover_top, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
+        List<ImagePiece> pieces = new ArrayList<>(level * level);
+
+//        int width = bitmap.getWidth();
+//        int height = bitmap.getHeight();
+//        int pieceWidth = width / xPiece;
+//        int pieceHeight = height /yPiece;
+        int pieceWidth2 = dishWidth / level;
+        int pieceHeight2 = dishHeight / level;
+        PorterDuffXfermode pdf = new PorterDuffXfermode(PorterDuff.Mode.SRC_IN);
+        Log.d(TAG, "pieceWidth: " + pieceWidth2);
+
         int k;
-        for (int i = 0; i < yPiece; i++) {
-            for (int j = 0; j < xPiece; j++) {
-                if(i==0) {
+        Log.d(TAG, "circle begin");
+        for (int i = 0; i < level; i++) {
+            for (int j = 0; j < level; j++) {
+                if(i == 0) {
                     if (j == 0) {
-                        k=1;
-                    } else if(j==xPiece-1) k=4;
-                    else  k=8;
+                        k = DishManager.COVER_TOP_LEFT;
+                    } else if(j == level - 1) {
+                        k = DishManager.COVER_TOP_RIGHT;
+                    }
+                    else  {
+                        k = DishManager.COVER_TOP;
+                    }
                 }
-                else if(i==yPiece-1){
-                    if(j==0) {k=2;}
-                        else if (j == xPiece - 1) {k=3;}
-                    else
-                           k=7;
+                else if(i == level - 1) {
+                    if(j == 0) {
+                        k = DishManager.COVER_BOTTOM_LEFT;
+                    } else if (j == level - 1) {
+                        k = DishManager.COVER_BOTTOM_RIGHT;
+                    } else{
+                        k = DishManager.COVER_BOTTOM;
+                    }
                 }
-                else if(j==0){
-                   k=5;
-                }else if(j==xPiece-1){
-                    k=6;
-                }else  k=0;
+                else if(j == 0) {
+                    k = DishManager.COVER_LEFT;
+                }else if(j == level - 1) {
+                    k = DishManager.COVER_RIGHT;
+                }else  {
+                    k = DishManager.COVER_CENTER;
+                }
+
+                Log.d(TAG, "piece " + k + " compute completed");
 
                 ImagePiece piece = new ImagePiece();
-                piece.index = j + i * xPiece;
-                int xValue,yValue;
-                if(j!=0)
-                    xValue =(int) (j *( pieceWidth2-pieceWidth2*0.136));
-                else xValue = j * pieceWidth2;
-                if(i!=0)
-                    yValue = (int) (i *( pieceHeight2-pieceWidth2*0.136));
-                else yValue = i * pieceHeight2;
-                Bitmap drawingBitmap = Bitmap.createBitmap(bmcover[k].getWidth(),
-                        bmcover[k].getHeight(), bmcover[k].getConfig());
-                Canvas canvas=new Canvas(drawingBitmap);
-                Paint paint=new Paint();
-                canvas.drawBitmap(bmcover[k],0,0,paint);
+                piece.index = j + i * level;
+                int xValue, yValue;
+
+                if(j != 0) {
+                    xValue = (int) (j * (pieceWidth2 - pieceWidth2 * 0.25));
+                }
+                else {
+                    xValue = j * pieceWidth2;
+                }
+                if(i != 0) {
+                    yValue = (int) (i * (pieceHeight2 - pieceWidth2 * 0.25));
+                }
+                else {
+                    yValue = i * pieceHeight2;
+                }
+
+//                xValue = j * pieceWidth2;
+//                yValue = i * pieceHeight2;
+
+                Bitmap drawingBitmap = Bitmap.createBitmap(pieceWidth2,
+                        pieceHeight2, Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(drawingBitmap);
+                Paint paint = new Paint();
+
+                //final float scale = DensityUtil.getScale(PuzzleApplication.getAppContext());
+                final float scale = (float) pieceWidth2 / bmcover[k].getWidth();
+                Matrix matrix = new Matrix();
+                matrix.setScale(scale, scale);
+                //canvas.drawBitmap(bmcover[k], 0, 0, paint);
+                canvas.drawBitmap(bmcover[k], matrix, paint);
+
                 paint.setXfermode(pdf);
-                piece.bitmap = Bitmap.createBitmap(bitmap, xValue, yValue,
-                        pieceWidth2, pieceHeight2);
-                canvas.drawBitmap(piece.bitmap,0, 0,paint);
-                piece.bitmap=drawingBitmap;
+                piece.bitmap = Bitmap.createBitmap(bitmap, xValue, yValue, pieceWidth2, pieceHeight2);
+                canvas.drawBitmap(piece.bitmap, 0, 0, paint);
+                piece.bitmap = drawingBitmap;
                 pieces.add(piece);
+
+                Log.d(TAG, "piece " + k + " draw completed");
             }
         }
 

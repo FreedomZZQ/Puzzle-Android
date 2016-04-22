@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">Puzzle</string>
-    <string name="title_activity_base">BaseActivity</string>
+    <string name="app_name">拼了个图</string>
     <string name="title_activity_setting">设置</string>
     <string name="title_activity_rank">排行</string>
     <string name="title_activity_game">游戏</string>

@@ -9,7 +9,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Display;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,6 +38,7 @@ import studio.androiddev.puzzle.event.PieceMoveSuccessEvent;
 import studio.androiddev.puzzle.imagesplit.ImagePiece;
 import studio.androiddev.puzzle.imagesplit.ImageSplitter;
 import studio.androiddev.puzzle.utils.BitmapUtils;
+import studio.androiddev.puzzle.utils.DensityUtil;
 import studio.androiddev.puzzle.utils.GlobalUtils;
 
 public class GameActivity extends BaseActivity {
@@ -56,8 +57,8 @@ public class GameActivity extends BaseActivity {
     private DishManager dm;
     private Bitmap mBitmap;
     private int mLevel = 4;
-    private static final int DISH_WIDTH = 300;
-    private static final int DISH_HEIGHT = 300;
+    private final int DISH_WIDTH = 300;
+    private final int DISH_HEIGHT = 300;
     private HashMap<Integer, View> pieceList = new HashMap<>();
 
     @Override
@@ -68,14 +69,10 @@ public class GameActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         EventBus.getDefault().register(this);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                EventBus.getDefault().post(new DishManagerInitStartEvent());
-                initialization();
-                EventBus.getDefault().post(new DishManagerInitFinishEvent());
-            }
-        }).start();
+        // TODO: 2016/4/22 这里想办法把初始化放到子线程
+        EventBus.getDefault().post(new DishManagerInitStartEvent());
+        initialization();
+        EventBus.getDefault().post(new DishManagerInitFinishEvent());
 
     }
 
@@ -134,6 +131,7 @@ public class GameActivity extends BaseActivity {
 
     private void initialization() {
         // TODO: 2016/4/19 这里加载时间太长，需要优化！
+        Log.d(TAG, "init begin");
         layViewContainer.removeAllViews();
         pieceList.clear();
 
@@ -145,25 +143,30 @@ public class GameActivity extends BaseActivity {
 
         dm.initNewGame(mBitmap, dish);
 
-        Display display = getWindowManager().getDefaultDisplay();
+        Log.d(TAG, "DishManager init finish");
 
         try {
 
-            ImageSplitter IS = new ImageSplitter();
-            List<ImagePiece> IPL = IS.split(mBitmap, getResources(), display, mLevel, mLevel);
+            List<ImagePiece> IPL = ImageSplitter.split(mBitmap, mLevel, DensityUtil.dip2px(GameActivity.this, DISH_WIDTH),
+                    DensityUtil.dip2px(GameActivity.this, DISH_HEIGHT));
+
+//            List<ImagePiece> IPL = ImageSplitter.split(mBitmap, mLevel, DISH_WIDTH, DISH_HEIGHT);
+
+            Log.d(TAG, "split finish");
+
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMarginEnd(20);
 
             for (int i = 0; i < mLevel; i++) {
                 for (int j = 0; j < mLevel; j++) {
                     DragImageView imageView = new DragImageView(this);
-                    imageView.setLayoutParams(new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.WRAP_CONTENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT));
+                    imageView.setLayoutParams(layoutParams);
                     imageView.setImageBitmap(IPL.get(j + i * mLevel).bitmap);
 
                     imageView.setIndex(j + i * mLevel);
                     pieceList.put(imageView.getIndex(), imageView);
-
-
                 }
             }
 
@@ -171,11 +174,7 @@ public class GameActivity extends BaseActivity {
 
             if (layViewContainer != null) {
                 for (int aList : list) {
-                    layViewContainer.addView(pieceList.get(aList),
-                            new LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT
-                            ));
+                    layViewContainer.addView(pieceList.get(aList), layoutParams);
                 }
 
             }
@@ -183,6 +182,8 @@ public class GameActivity extends BaseActivity {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        Log.d(TAG, "init finish");
     }
 
     /**
