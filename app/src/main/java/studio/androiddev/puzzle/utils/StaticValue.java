@@ -1,7 +1,5 @@
 package studio.androiddev.puzzle.utils;
 
-import studio.androiddev.puzzle.model.User;
-
 /**
  * Created by lenovo on 2016/3/22.
  */
