@@ -55,7 +55,7 @@ public class MainActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.beginButton:
-                GameActivity.actionStart(MainActivity.this);
+                ChoosePicActivity.actionStart(MainActivity.this);
                 break;
             case R.id.rankButton:
                 RankActivity.actionStart(MainActivity.this);

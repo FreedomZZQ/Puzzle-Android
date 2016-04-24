@@ -6,4 +6,5 @@
     <string name="title_activity_personal">个人中心</string>
     <string name="click_again_to_exit">再按一次返回键退出</string>
     <string name="default_time">00:00</string>
+    <string name="title_activity_choose_pic">选择关卡</string>
 </resources>

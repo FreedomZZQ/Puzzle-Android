@@ -81,6 +81,7 @@ public class GameActivity extends BaseActivity {
     private final int DISH_WIDTH = 300;
     private final int DISH_HEIGHT = 300;
     private HashMap<Integer, View> pieceList = new HashMap<>();
+    private static final String PIC_INDEX = "picIndex";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,7 +169,9 @@ public class GameActivity extends BaseActivity {
         layViewContainer.removeAllViews();
         pieceList.clear();
 
-        mBitmap = BitmapUtils.decodeSampledBitmapFromResources(getResources(), R.drawable.default1,
+        int picIndex = getIntent().getIntExtra(PIC_INDEX, 0);
+        mBitmap = BitmapUtils.decodeSampledBitmapFromResources(getResources(),
+                ChoosePicActivity.icons[picIndex],
                 DISH_WIDTH, DISH_HEIGHT);
         dm = PuzzleApplication.getDishManager();
 
@@ -252,8 +255,9 @@ public class GameActivity extends BaseActivity {
         }
     }
 
-    public static void actionStart(Context context) {
+    public static void actionStart(Context context, int picIndex) {
         Intent intent = new Intent(context, GameActivity.class);
+        intent.putExtra(PIC_INDEX, picIndex);
         context.startActivity(intent);
     }
 
