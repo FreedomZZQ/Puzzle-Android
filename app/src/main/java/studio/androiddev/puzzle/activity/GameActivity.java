@@ -8,12 +8,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
@@ -39,6 +42,7 @@ import studio.androiddev.puzzle.imagesplit.ImagePiece;
 import studio.androiddev.puzzle.imagesplit.ImageSplitter;
 import studio.androiddev.puzzle.utils.BitmapUtils;
 import studio.androiddev.puzzle.utils.DensityUtil;
+import studio.androiddev.puzzle.utils.GameTimer;
 import studio.androiddev.puzzle.utils.GlobalUtils;
 
 public class GameActivity extends BaseActivity {
@@ -53,6 +57,23 @@ public class GameActivity extends BaseActivity {
     ProgressBar progressBar;
     @Bind(R.id.gameContainer)
     LinearLayout gameContainer;
+    @Bind(R.id.timeText)
+    TextView timeText;
+
+    private Handler timeHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case GameTimer.MESSAGE_TIMER:
+                    refreshTimeText();
+                    break;
+
+            }
+        }
+    };
+    private GameTimer gameTimer;
+    private int time = 0;
 
     private DishManager dm;
     private Bitmap mBitmap;
@@ -68,12 +89,23 @@ public class GameActivity extends BaseActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         EventBus.getDefault().register(this);
+        gameTimer = new GameTimer(timeHandler);
 
         // TODO: 2016/4/22 这里想办法把初始化放到子线程
         EventBus.getDefault().post(new DishManagerInitStartEvent());
         initialization();
         EventBus.getDefault().post(new DishManagerInitFinishEvent());
 
+    }
+
+    private void refreshTimeText(){
+        time++;
+
+        int curminute = time / 60;
+        int cursecond = time % 60;
+
+        String curTimeString = String.format("%02d:%02d", curminute, cursecond);
+        timeText.setText(curTimeString);
     }
 
     @Override
@@ -115,13 +147,15 @@ public class GameActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GameSuccessEvent event) {
-        // TODO: 2016/4/17 游戏胜利的逻辑
+        // TODO: 2016/4/24 游戏胜利的逻辑 根据结束时的时间更新排行
         Toast.makeText(GameActivity.this, "Congratulations!", Toast.LENGTH_SHORT).show();
+        gameTimer.stopTimer();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(DishManagerInitFinishEvent event) {
         showProgress(false);
+        gameTimer.startTimer();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -130,7 +164,6 @@ public class GameActivity extends BaseActivity {
     }
 
     private void initialization() {
-        // TODO: 2016/4/19 这里加载时间太长，需要优化！
         Log.d(TAG, "init begin");
         layViewContainer.removeAllViews();
         pieceList.clear();
@@ -139,7 +172,7 @@ public class GameActivity extends BaseActivity {
                 DISH_WIDTH, DISH_HEIGHT);
         dm = PuzzleApplication.getDishManager();
 
-        if(dm == null) return;
+        if (dm == null) return;
 
         dm.initNewGame(mBitmap, dish);
 
@@ -147,6 +180,7 @@ public class GameActivity extends BaseActivity {
 
         try {
 
+            // TODO: 2016/4/24 这里切割图片有bug 需要继续优化算法
             List<ImagePiece> IPL = ImageSplitter.split(mBitmap, mLevel, DensityUtil.dip2px(GameActivity.this, DISH_WIDTH),
                     DensityUtil.dip2px(GameActivity.this, DISH_HEIGHT));
 
