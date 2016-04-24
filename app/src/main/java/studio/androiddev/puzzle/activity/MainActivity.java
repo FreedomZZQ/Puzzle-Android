@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -19,13 +18,13 @@ import studio.androiddev.puzzle.R;
 public class MainActivity extends BaseActivity {
 
     @Bind(R.id.beginButton)
-    Button beginButton;
+    ImageButton beginButton;
     @Bind(R.id.rankButton)
-    Button rankButton;
+    ImageButton rankButton;
     @Bind(R.id.settingButton)
-    Button settingButton;
+    ImageButton settingButton;
     @Bind(R.id.exitButton)
-    Button exitButton;
+    ImageButton exitButton;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.userButton)
