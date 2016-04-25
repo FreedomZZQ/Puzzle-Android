@@ -42,17 +42,6 @@ public class ChoosePicActivity extends BaseActivity {
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
 
-//        ArrayList<HashMap<String, Object>> homeModules = new ArrayList<>();
-//        for (int icon : icons) {
-//            HashMap<String, Object> map = new HashMap<>();
-//            map.put("ItemImage", icon);
-//            homeModules.add(map);
-//        }
-//
-//        SimpleAdapter gridviewAdapter = new SimpleAdapter(ChoosePicActivity.this, homeModules,
-//                R.layout.choose_pic_gridview_item,
-//                new String []{"ItemImage"},new int[]{R.id.imageItem});
-
         picContainer.setAdapter(new ChoosePicGridViewAdapter(ChoosePicActivity.this, R.layout.choose_pic_gridview_item));
         picContainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -5,11 +5,133 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="studio.androiddev.puzzle.activity.SettingActivity"
     tools:showIn="@layout/activity_setting">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/settingBg"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
+
+        <ImageView
+            android:layout_width="@dimen/setting_icon_size"
+            android:layout_height="@dimen/setting_icon_size"
+            android:id="@+id/iconHelp"
+            android:background="@mipmap/help"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="10dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_level"
+                android:textSize="23sp"
+                android:textColor="@color/themeBlue"
+                android:layout_marginBottom="5dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_adjust"
+                android:textSize="10sp"
+                android:textColor="@color/fontGrey"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_makediff"
+                android:textSize="10sp"
+                android:textColor="@color/fontGrey"/>
+
+        </LinearLayout>
+        
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/logo"
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp">
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+            android:background="@color/settingBg"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textAbout"
+            android:text="@string/setting_about"
+            android:textColor="@color/fontGrey"
+            android:textSize="20sp"
+            android:layout_gravity="center_vertical"/>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+            android:background="@color/settingBg"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="20dp"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="153dp"
+        android:id="@+id/logo"
+        android:layout_above="@+id/buttonShare"
+        android:background="@mipmap/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"/>
+    
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonShare"
+        android:background="@mipmap/share"
+        android:layout_above="@+id/copyrightCN"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="45dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/copyrightCN"
+        android:text="@string/setting_copyright_cn"
+        android:layout_above="@+id/copyrightEN"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/fontGrey"
+        android:textSize="10sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/copyrightEN"
+        android:text="@string/setting_copyright_en"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/fontGrey"
+        android:textSize="12sp"/>
 
 </RelativeLayout>
