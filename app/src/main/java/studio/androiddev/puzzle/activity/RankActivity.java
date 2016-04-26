@@ -49,8 +49,8 @@ public class RankActivity extends BaseActivity {
 
         mlv_rank= (ListView) findViewById(R.id.lv_rank);
 
-        BmobQuery<Record> query = new BmobQuery<Record>();
-        query.order("updatedAt");
+        BmobQuery<Record> query = new BmobQuery<>();
+        query.order("-updatedAt");
         query.setLimit(20);
         query.findObjects(this, new FindListener<Record>() {
             @Override
