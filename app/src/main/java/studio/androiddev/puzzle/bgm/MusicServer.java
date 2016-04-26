@@ -16,7 +16,7 @@ import studio.androiddev.puzzle.R;
 public class MusicServer extends Service {
 
     private MediaPlayer mediaPlayer;
-    private int songList[]={R.raw.a, R.raw.b, R.raw.c};
+    private int songList[]={R.raw.a, R.raw.b, R.raw.c,R.raw.d};
     private int songIndex = 0;
     @Override
     public IBinder onBind(Intent intent) {
@@ -34,7 +34,7 @@ public class MusicServer extends Service {
         if(mediaPlayer==null){
         // R.raw.mmp是资源文件，MP3格式的
             try {
-                songplay();
+                nextsong();
                 mediaPlayer.setOnCompletionListener(new CompletionListener());
             } catch (IOException e) {
                 e.printStackTrace();
@@ -58,17 +58,8 @@ public class MusicServer extends Service {
 
     }
     public void nextsong() throws IOException {
-
-        if (songIndex < songList.length - 1) {
-            songIndex = songIndex + 1;
+        songIndex = 0 + (int)(Math.random() * 4);
             songplay();
-        }
-        else {
-            songIndex = 0;
-            songplay();
-        }
-
-
     }
     private void songplay() throws IOException {
         try {
