@@ -86,6 +86,8 @@ public class GameActivity extends BaseActivity {
     private HashMap<Integer, View> pieceList = new HashMap<>();
     private static final String PIC_INDEX = "picIndex";
 
+    private List<ImagePiece> IPL;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,6 +140,12 @@ public class GameActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        mBitmap.recycle();
+        if(IPL != null){
+            for(ImagePiece imagePiece : IPL){
+                imagePiece.recycleBitmap();
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -186,6 +194,7 @@ public class GameActivity extends BaseActivity {
         showProgress(true);
     }
 
+
     private void initialization() {
         Log.d(TAG, "init begin");
         layViewContainer.removeAllViews();
@@ -206,11 +215,9 @@ public class GameActivity extends BaseActivity {
         try {
 
             // TODO: 2016/4/24 这里切割图片有bug 需要继续优化算法
-            List<ImagePiece> IPL = ImageSplitter.split(mBitmap, PuzzleApplication.getLevel(),
+            IPL = ImageSplitter.split(mBitmap, PuzzleApplication.getLevel(),
                     DensityUtil.dip2px(GameActivity.this, DISH_WIDTH),
                     DensityUtil.dip2px(GameActivity.this, DISH_HEIGHT));
-
-//            List<ImagePiece> IPL = ImageSplitter.split(mBitmap, mLevel, DISH_WIDTH, DISH_HEIGHT);
 
             Log.d(TAG, "split finish");
 

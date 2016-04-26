@@ -82,8 +82,13 @@ public class DishManager{
     public void initNewGame(Bitmap bitmap, ImageView imageView){
         if(bitmap == null || imageView == null) return;
 
+        if(mBitmap != null){
+            mBitmap.recycle();
+        }
+
         mImageView = imageView;
         mBitmap = bitmap;
+        mLeftSize = mSize;
         for(int i = 0; i < mIndex.length; i++){
             mIndex[i] = false;
         }
@@ -147,10 +152,7 @@ public class DishManager{
      */
     public boolean judgeDrag(int i, int x, int y){
         RectF rect = getRectF(i);
-        int dpX = DensityUtil.px2dip(PuzzleApplication.getAppContext(), x);
-        int dpY = DensityUtil.px2dip(PuzzleApplication.getAppContext(), y);
-
-        return rect.contains(dpX, dpY);
+        return rect.contains(x, y);
     }
 
     /**
@@ -188,9 +190,9 @@ public class DishManager{
      */
     private void initMask(){
 
-        r = DISH_WIDTH / mLevel / 4;
-        rectWidth = DISH_WIDTH / mLevel;
-        rectHeight = DISH_HEIGHT / mLevel;
+        rectWidth = DensityUtil.dip2px(PuzzleApplication.getAppContext(), (float) DISH_WIDTH / mLevel);
+        rectHeight = DensityUtil.dip2px(PuzzleApplication.getAppContext(), (float) DISH_HEIGHT / mLevel);
+        r = rectWidth / 4;
 
         Log.d(TAG, "rectWidth and Height: " + rectWidth);
 
@@ -291,15 +293,14 @@ public class DishManager{
      * @return 遮罩层Bitmap
      */
     private Bitmap getMask(){
-        Bitmap mask = Bitmap.createBitmap(DISH_WIDTH, DISH_HEIGHT, Bitmap.Config.ARGB_8888);
+        int width = DensityUtil.dip2px(PuzzleApplication.getAppContext(), (float) DISH_WIDTH);
+        int height = DensityUtil.dip2px(PuzzleApplication.getAppContext(), (float) DISH_HEIGHT);
+        Bitmap mask = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(mask);
 
         Paint p = new Paint();
         p.setAntiAlias(true);
         p.setColor(Color.RED);
-
-//        mIndex[0] = true;
-//        mIndex[6] = true;
 
         for(int i = 0; i < mSize; i += mLevel){
             for(int j = i; j < i + mLevel; j++){
@@ -363,25 +364,31 @@ public class DishManager{
 
         return mask;
     }
+
+    private Bitmap output;
+    private Bitmap mask;
     /**
      * 刷新拼盘显示
      * 首先获取遮罩层，然后将遮罩层与原始图片混合并显示
      */
     private void refreshDish(){
         if(mBitmap == null) return;
+        if(mask != null) mask.recycle();
+        if(output != null) output.recycle();
         //获取遮罩层
-        Bitmap mask = getMask();
+        mask = getMask();
 
         //将遮罩层与原始图片混合并显示在ImageView
-
-        Bitmap output = Bitmap.createBitmap(DISH_WIDTH, DISH_HEIGHT, Bitmap.Config.ARGB_8888);
+        int width = DensityUtil.dip2px(PuzzleApplication.getAppContext(), (float) DISH_WIDTH);
+        int height = DensityUtil.dip2px(PuzzleApplication.getAppContext(), (float) DISH_HEIGHT);
+        output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Paint p = new Paint();
 
         p.setAntiAlias(true);
         Canvas canvas = new Canvas(output);
         canvas.drawBitmap(mask, 0, 0, p);
         p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        RectF rect = new RectF(0, 0, DISH_WIDTH, DISH_HEIGHT);
+        RectF rect = new RectF(0, 0, width, height);
         canvas.drawBitmap(mBitmap, null, rect, p);
         mImageView.setImageBitmap(output);
     }

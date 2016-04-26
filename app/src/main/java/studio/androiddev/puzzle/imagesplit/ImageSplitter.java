@@ -25,23 +25,8 @@ public class ImageSplitter {
     public static List<ImagePiece> split(Bitmap bitmap, int level, int dishWidth, int dishHeight)
             throws FileNotFoundException {
         Bitmap[] bmcover = DishManager.getBitmapCover();
-//        Bitmap[] bmcover=new Bitmap[9];
-//        BitmapUtils bu=new BitmapUtils();
-//        bmcover[0]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
-//        bmcover[1]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover1, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
-//        bmcover[2]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover2, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
-//        bmcover[3]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover3, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
-//        bmcover[4]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover4, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
-//        bmcover[5]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover_left, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
-//        bmcover[6]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover_right, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
-//        bmcover[7]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover_buttom, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
-//        bmcover[8]=bu.decodeSampledBitmapFromPath(rs, R.drawable.cover_top, display.getWidth()/xPiece, display.getHeight()/yPiece,false);
         List<ImagePiece> pieces = new ArrayList<>(level * level);
 
-//        int width = bitmap.getWidth();
-//        int height = bitmap.getHeight();
-//        int pieceWidth = width / xPiece;
-//        int pieceHeight = height /yPiece;
         int pieceWidth2 = dishWidth / level;
         int pieceHeight2 = dishHeight / level;
         PorterDuffXfermode pdf = new PorterDuffXfermode(PorterDuff.Mode.SRC_IN);
@@ -117,7 +102,6 @@ public class ImageSplitter {
                 canvas.drawBitmap(piece.bitmap, 0, 0, paint);
                 piece.bitmap = drawingBitmap;
                 pieces.add(piece);
-
                 Log.d(TAG, "piece " + k + " draw completed");
             }
         }
