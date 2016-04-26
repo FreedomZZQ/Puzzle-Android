@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.List;
@@ -30,9 +30,9 @@ public class LoginActivity extends BaseActivity {
     @Bind(R.id.et_pwd)
     EditText met_pwd;
     @Bind(R.id.btn_register)
-    Button mbtn_register;
+    ImageButton mbtn_register;
     @Bind(R.id.btn_login)
-    Button mbtn_login;
+    ImageButton mbtn_login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

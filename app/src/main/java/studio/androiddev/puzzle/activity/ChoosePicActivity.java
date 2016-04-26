@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -39,16 +40,7 @@ public class ChoosePicActivity extends BaseActivity {
 
     private void initView() {
 
-//        ArrayList<HashMap<String, Object>> homeModules = new ArrayList<>();
-//        for (int icon : icons) {
-//            HashMap<String, Object> map = new HashMap<>();
-//            map.put("ItemImage", icon);
-//            homeModules.add(map);
-//        }
-//
-//        SimpleAdapter gridviewAdapter = new SimpleAdapter(ChoosePicActivity.this, homeModules,
-//                R.layout.choose_pic_gridview_item,
-//                new String []{"ItemImage"},new int[]{R.id.imageItem});
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
 
         picContainer.setAdapter(new ChoosePicGridViewAdapter(ChoosePicActivity.this, R.layout.choose_pic_gridview_item));
         picContainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -59,6 +51,15 @@ public class ChoosePicActivity extends BaseActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public static void actionStart(Context context) {

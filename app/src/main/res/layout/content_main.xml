@@ -17,29 +17,41 @@
         android:layout_centerInParent="true"
         android:id="@+id/buttonGroup">
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/beginButton"
-            android:text="Begin"/>
+            android:background="@mipmap/button_begin"
+            android:contentDescription="Begin"
+            android:layout_marginBottom="@dimen/main_buttons_margin"
+            android:layout_marginTop="@dimen/main_buttons_margin"/>
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/rankButton"
-            android:text="Rank"/>
+            android:background="@mipmap/button_rank"
+            android:contentDescription="Rank"
+            android:layout_marginBottom="@dimen/main_buttons_margin"
+            android:layout_marginTop="@dimen/main_buttons_margin"/>
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/settingButton"
-            android:text="Setting"/>
+            android:background="@mipmap/button_setting"
+            android:contentDescription="Setting"
+            android:layout_marginBottom="@dimen/main_buttons_margin"
+            android:layout_marginTop="@dimen/main_buttons_margin"/>
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/exitButton"
-            android:text="Exit"/>
+            android:background="@mipmap/button_exit"
+            android:contentDescription="Exit"
+            android:layout_marginBottom="@dimen/main_buttons_margin"
+            android:layout_marginTop="@dimen/main_buttons_margin"/>
 
     </LinearLayout>
 

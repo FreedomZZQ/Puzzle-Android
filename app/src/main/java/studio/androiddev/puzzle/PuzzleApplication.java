@@ -2,9 +2,11 @@ package studio.androiddev.puzzle;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import studio.androiddev.puzzle.dish.DishManager;
 import studio.androiddev.puzzle.model.User;
+import studio.androiddev.puzzle.utils.StaticValue;
 
 /**
  * Puzzle
@@ -18,10 +20,24 @@ public class PuzzleApplication extends Application{
 
     private static DishManager dm;
 
+    public static int getLevel() {
+        return level;
+    }
+
+    public static void setLevel(int level) {
+        if(level < 3) return;
+        PuzzleApplication.level = level;
+        initDishManager();
+    }
+
+    private static int level = 4;
+
     @Override
     public void onCreate(){
         super.onCreate();
         if(mContext == null) mContext = getApplicationContext();
+        SharedPreferences pref = getSharedPreferences(StaticValue.SP_NAME, MODE_PRIVATE);
+        setLevel(pref.getInt(StaticValue.SP_LEVEL, 4));
     }
 
     public static User getmUser() {
@@ -36,7 +52,7 @@ public class PuzzleApplication extends Application{
         return mContext;
     }
 
-    public static void initDishManager(int level){
+    public static void initDishManager(){
         dm = new DishManager(level);
     }
 

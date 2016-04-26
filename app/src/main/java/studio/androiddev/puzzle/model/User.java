@@ -17,9 +17,6 @@ public class User extends BmobObject implements Serializable{
     String imgUrl;
     String mailNum;
 
-
-
-
     public String getPhoneNum() {
         return phoneNum;
     }

@@ -6,26 +6,24 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import studio.androiddev.puzzle.PuzzleApplication;
 import studio.androiddev.puzzle.R;
 
 public class MainActivity extends BaseActivity {
 
     @Bind(R.id.beginButton)
-    Button beginButton;
+    ImageButton beginButton;
     @Bind(R.id.rankButton)
-    Button rankButton;
+    ImageButton rankButton;
     @Bind(R.id.settingButton)
-    Button settingButton;
+    ImageButton settingButton;
     @Bind(R.id.exitButton)
-    Button exitButton;
+    ImageButton exitButton;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.userButton)
@@ -41,8 +39,11 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
+<<<<<<< HEAD
         PuzzleApplication.initDishManager(4);
 
+=======
+>>>>>>> 6eee8007d0fe90ba14c51af7c4a31c77c485e9a4
     }
 
     @Override
