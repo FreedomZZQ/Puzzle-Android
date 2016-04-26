@@ -12,14 +12,43 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
-
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginEnd="18dp"
+            android:background="@drawable/card_bg">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/timeText"
+            android:text="@string/default_time"
+            android:layout_above="@+id/gameContainer"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginEnd="30dp"
+            android:padding="5dp"
+            android:textSize="20sp"/>
+
+            <ImageView
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:id="@+id/imageView3"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/clock"/>
+        </FrameLayout>
+        </FrameLayout>
     </android.support.design.widget.AppBarLayout>
 
 

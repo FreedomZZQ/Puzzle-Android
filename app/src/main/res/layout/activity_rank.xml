@@ -24,7 +24,7 @@
     <include layout="@layout/content_rank" />
 
     <ListView
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="55dp"
         android:id="@+id/lv_rank"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

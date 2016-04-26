@@ -3,7 +3,10 @@
     <color name="colorPrimary">#ff9000</color>
     <color name="colorPrimaryDark">#f27d00</color>
     <color name="colorAccent">#FF4081</color>
-
+    <color name="ricewhite">#f5f5f5</color>
+    <color name="mdarklight">#60282828</color>
+    <color name="halfwhite">#50ffffff</color>
+    <color name="mgreyshade">#30282828</color>
     <color name="themeYellow">#ff9000</color>
     <color name="themeGreen">#8ad520</color>
     <color name="themeBlue">#3383e6</color>

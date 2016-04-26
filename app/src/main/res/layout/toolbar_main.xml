@@ -10,5 +10,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/userButton"
         android:background="@mipmap/user"/>
-
+    <ImageView
+        android:id="@+id/toolbar_edit"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:paddingRight="15dp"
+        android:alpha="0.5"
+        android:src="@drawable/puzzle_en"/>
 </android.support.v7.widget.Toolbar>
