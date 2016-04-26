@@ -17,8 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -65,9 +65,9 @@ public class UserInfoActivity extends BaseActivity {
     @Bind(R.id.lv_record)
     ListView lv_record;
     @Bind(R.id.btn_changePwd)
-    Button mbtn_changePwd;
+    ImageButton mbtn_changePwd;
     @Bind(R.id.btn_exitAccount)
-    Button mbtn_exit;
+    ImageButton mbtn_exit;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
@@ -347,6 +347,7 @@ public class UserInfoActivity extends BaseActivity {
             } else {
                 User mReUser = (User) data.getSerializableExtra("reuser");
                 user_login = mReUser;
+                PuzzleApplication.setmUser(mReUser);
             }
 
         }
@@ -402,7 +403,7 @@ public class UserInfoActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_changePwd:
-                ChangePwdActivity.actionStart(UserInfoActivity.this, user_login);
+                ChangePwdActivity.actionStart(UserInfoActivity.this);
                 break;
             case R.id.btn_exitAccount:
                 LoginActivity.actionStart(UserInfoActivity.this);

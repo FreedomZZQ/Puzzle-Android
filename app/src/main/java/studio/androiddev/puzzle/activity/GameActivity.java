@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -81,7 +82,7 @@ public class GameActivity extends BaseActivity {
 
     private DishManager dm;
     private Bitmap mBitmap;
-    private int mLevel = 4;
+
     private final int DISH_WIDTH = 300;
     private final int DISH_HEIGHT = 300;
     private HashMap<Integer, View> pieceList = new HashMap<>();
@@ -94,7 +95,12 @@ public class GameActivity extends BaseActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         EventBus.getDefault().register(this);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         gameTimer = new GameTimer(timeHandler);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8402f1e2f36b311ce642c7f164878bd6781fcbce
         EventBus.getDefault().post(new DishManagerInitStartEvent());
         initialization();
         EventBus.getDefault().post(new DishManagerInitFinishEvent());
@@ -204,7 +210,13 @@ public class GameActivity extends BaseActivity {
 
         try {
 
+<<<<<<< HEAD
             List<ImagePiece> IPL = ImageSplitter.split(mBitmap, mLevel, DensityUtil.dip2px(GameActivity.this, DISH_WIDTH),
+=======
+            // TODO: 2016/4/24 这里切割图片有bug 需要继续优化算法
+            List<ImagePiece> IPL = ImageSplitter.split(mBitmap, PuzzleApplication.getLevel(),
+                    DensityUtil.dip2px(GameActivity.this, DISH_WIDTH),
+>>>>>>> 8402f1e2f36b311ce642c7f164878bd6781fcbce
                     DensityUtil.dip2px(GameActivity.this, DISH_HEIGHT));
 
 //            List<ImagePiece> IPL = ImageSplitter.split(mBitmap, mLevel, DISH_WIDTH, DISH_HEIGHT);
@@ -215,6 +227,8 @@ public class GameActivity extends BaseActivity {
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             layoutParams.setMarginEnd(20);
+
+            int mLevel = PuzzleApplication.getLevel();
 
             for (int i = 0; i < mLevel; i++) {
                 for (int j = 0; j < mLevel; j++) {
@@ -273,6 +287,15 @@ public class GameActivity extends BaseActivity {
             progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
             gameContainer.setVisibility(show ? View.GONE : View.VISIBLE);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public static void actionStart(Context context, int picIndex) {

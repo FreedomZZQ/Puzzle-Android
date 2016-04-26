@@ -84,6 +84,9 @@ public class DishManager{
 
         mImageView = imageView;
         mBitmap = bitmap;
+        for(int i = 0; i < mIndex.length; i++){
+            mIndex[i] = false;
+        }
 
         imageView.setOnDragListener(new View.OnDragListener() {
             @Override

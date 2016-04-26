@@ -10,7 +10,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="studio.androiddev.puzzle.activity.ChoosePicActivity"
-    tools:showIn="@layout/activity_choose_pic">
+    tools:showIn="@layout/activity_choose_pic"
+    android:background="@color/background">
 
     <GridView
         android:layout_width="wrap_content"
