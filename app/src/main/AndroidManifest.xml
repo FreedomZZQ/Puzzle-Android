@@ -24,7 +24,8 @@
             android:launchMode="singleTask"/>
         <activity
             android:name=".activity.LoginActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,6 +39,7 @@
             android:label="@string/title_activity_personal"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.ChangePwdActivity"
+            android:label="@string/title_activity_change_pwd"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.SettingActivity"
@@ -57,7 +59,7 @@
         <activity
             android:name=".activity.ChoosePicActivity"
             android:label="@string/title_activity_choose_pic"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

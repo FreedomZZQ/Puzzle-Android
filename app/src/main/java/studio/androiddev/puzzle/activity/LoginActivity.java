@@ -72,10 +72,8 @@ public class LoginActivity extends BaseActivity {
                                         //登陆成功后要做三件事：
                                         //1.更新Application中的User
                                         //2.启动MainActivity
-                                        //3.finish掉LoginActivity
                                         PuzzleApplication.setmUser(list.get(0));
                                         MainActivity.actionStart(LoginActivity.this);
-                                        LoginActivity.this.finish();
                                     } else {
                                         Toast.makeText(LoginActivity.this, "输入密码错误，请重新输入！", Toast.LENGTH_SHORT).show();
                                     }
