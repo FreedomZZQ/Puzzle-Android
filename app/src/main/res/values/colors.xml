@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#ff9000</color>
     <color name="colorPrimaryDark">#f27d00</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#dcdcdc</color>
     <color name="mdarklight">#60282828</color>
     <color name="mgreyshade">#30282828</color>
     <color name="themeYellow">#ff9000</color>

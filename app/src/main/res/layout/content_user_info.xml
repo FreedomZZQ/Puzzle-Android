@@ -144,27 +144,31 @@
         <ListView
             android:id="@+id/lv_record"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-
-            />
+            android:layout_height="150dp" />
 
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/btn_changePwd"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@mipmap/change_pwd"/>
+        android:layout_gravity="center_horizontal">
 
-    <ImageButton
-        android:id="@+id/btn_exitAccount"
-        android:layout_marginTop="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@mipmap/logoff"/>
+        <ImageButton
+            android:id="@+id/btn_changePwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@mipmap/change_pwd"/>
 
+        <ImageButton
+            android:id="@+id/btn_exitAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@mipmap/logoff"/>
+
+    </LinearLayout>
 
 </LinearLayout>

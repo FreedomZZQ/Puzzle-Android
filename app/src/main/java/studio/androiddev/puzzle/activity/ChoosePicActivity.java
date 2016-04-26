@@ -25,7 +25,9 @@ public class ChoosePicActivity extends BaseActivity {
             R.drawable.default1,
             R.drawable.default2,
             R.drawable.default3,
-            R.drawable.default4
+            R.drawable.default4,
+            R.drawable.default5,
+            R.drawable.default6
     };
 
     @Override

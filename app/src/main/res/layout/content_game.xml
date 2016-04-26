@@ -48,7 +48,8 @@
                 android:layout_height="match_parent"
                 android:id="@+id/layViewContainer"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
             </LinearLayout>
 
         </HorizontalScrollView>

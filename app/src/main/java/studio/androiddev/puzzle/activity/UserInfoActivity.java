@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,7 +30,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -454,7 +452,7 @@ public class UserInfoActivity extends BaseActivity {
             viewHolder.mtv_time.setText(getItem(position).getTime());
             viewHolder.mtv_type.setText(getItem(position).getType()+" x "+getItem(position).getType());
             if (position % 2 == 0) {
-                convertView.findViewById(R.id.linearlayout_record).setBackgroundColor(Color.GRAY);
+                convertView.findViewById(R.id.linearlayout_record).setBackgroundColor(getResources().getColor(R.color.personGreyDark));
             }
             return convertView;
         }
