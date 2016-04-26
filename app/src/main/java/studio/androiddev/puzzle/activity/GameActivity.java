@@ -78,7 +78,7 @@ public class GameActivity extends BaseActivity {
 
     private DishManager dm;
     private Bitmap mBitmap;
-    private int mLevel = 4;
+
     private final int DISH_WIDTH = 300;
     private final int DISH_HEIGHT = 300;
     private HashMap<Integer, View> pieceList = new HashMap<>();
@@ -94,7 +94,6 @@ public class GameActivity extends BaseActivity {
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         gameTimer = new GameTimer(timeHandler);
 
-        // TODO: 2016/4/22 这里想办法把初始化放到子线程
         EventBus.getDefault().post(new DishManagerInitStartEvent());
         initialization();
         EventBus.getDefault().post(new DishManagerInitFinishEvent());
@@ -186,7 +185,8 @@ public class GameActivity extends BaseActivity {
         try {
 
             // TODO: 2016/4/24 这里切割图片有bug 需要继续优化算法
-            List<ImagePiece> IPL = ImageSplitter.split(mBitmap, mLevel, DensityUtil.dip2px(GameActivity.this, DISH_WIDTH),
+            List<ImagePiece> IPL = ImageSplitter.split(mBitmap, PuzzleApplication.getLevel(),
+                    DensityUtil.dip2px(GameActivity.this, DISH_WIDTH),
                     DensityUtil.dip2px(GameActivity.this, DISH_HEIGHT));
 
 //            List<ImagePiece> IPL = ImageSplitter.split(mBitmap, mLevel, DISH_WIDTH, DISH_HEIGHT);
@@ -197,6 +197,8 @@ public class GameActivity extends BaseActivity {
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             layoutParams.setMarginEnd(20);
+
+            int mLevel = PuzzleApplication.getLevel();
 
             for (int i = 0; i < mLevel; i++) {
                 for (int j = 0; j < mLevel; j++) {
