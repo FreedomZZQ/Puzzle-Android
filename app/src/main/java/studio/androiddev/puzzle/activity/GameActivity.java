@@ -91,8 +91,6 @@ public class GameActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         EventBus.getDefault().register(this);
         gameTimer = new GameTimer(timeHandler);
-
-        // TODO: 2016/4/22 这里想办法把初始化放到子线程
         EventBus.getDefault().post(new DishManagerInitStartEvent());
         initialization();
         EventBus.getDefault().post(new DishManagerInitFinishEvent());
@@ -148,7 +146,6 @@ public class GameActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GameSuccessEvent event) {
-        // TODO: 2016/4/24 游戏胜利的逻辑 根据结束时的时间更新排行
         Toast.makeText(GameActivity.this, "Congratulations!", Toast.LENGTH_SHORT).show();
         gameTimer.stopTimer();
     }
@@ -183,7 +180,6 @@ public class GameActivity extends BaseActivity {
 
         try {
 
-            // TODO: 2016/4/24 这里切割图片有bug 需要继续优化算法
             List<ImagePiece> IPL = ImageSplitter.split(mBitmap, mLevel, DensityUtil.dip2px(GameActivity.this, DISH_WIDTH),
                     DensityUtil.dip2px(GameActivity.this, DISH_HEIGHT));
 

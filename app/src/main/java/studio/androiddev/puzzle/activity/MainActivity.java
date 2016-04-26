@@ -41,7 +41,6 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        // TODO: 2016/4/19 这里的参数应该是从sharedpreferences中读取
         PuzzleApplication.initDishManager(4);
 
     }
