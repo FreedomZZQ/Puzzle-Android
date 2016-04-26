@@ -40,12 +40,12 @@
 
         <HorizontalScrollView
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="200dp"
             android:id="@+id/viewContainer">
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="200dp"
                 android:id="@+id/layViewContainer"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"

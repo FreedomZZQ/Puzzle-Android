@@ -27,10 +27,10 @@ public class ImageSplitter {
         Bitmap[] bmcover = DishManager.getBitmapCover();
         List<ImagePiece> pieces = new ArrayList<>(level * level);
 
-        int pieceWidth2 = dishWidth / level;
-        int pieceHeight2 = dishHeight / level;
+        float pieceWidth = (float) dishWidth / level;
+        float pieceHeight = (float) dishHeight / level;
         PorterDuffXfermode pdf = new PorterDuffXfermode(PorterDuff.Mode.SRC_IN);
-        Log.d(TAG, "pieceWidth: " + pieceWidth2);
+        Log.d(TAG, "pieceWidth: " + pieceWidth);
 
         int k;
         Log.d(TAG, "circle begin");
@@ -67,38 +67,56 @@ public class ImageSplitter {
 
                 ImagePiece piece = new ImagePiece();
                 piece.index = j + i * level;
-                int xValue, yValue;
+                float xValue, yValue;
 
                 if(j != 0) {
-                    xValue = (int) (j * (pieceWidth2 - pieceWidth2 * 0.25));
+                    //xValue = (int) (j * (pieceWidth - pieceWidth * 0.25));
+                    xValue = (int) (j * pieceWidth - pieceWidth * 0.25);
                 }
                 else {
-                    xValue = j * pieceWidth2;
+                    xValue = j * pieceWidth;
                 }
                 if(i != 0) {
-                    yValue = (int) (i * (pieceHeight2 - pieceWidth2 * 0.25));
+                    //yValue = (int) (i * (pieceHeight - pieceWidth * 0.25));
+                    yValue = i * pieceHeight;
+                    if(i != level - 1){
+                        yValue += 0.25f * pieceHeight;
+                    }
                 }
                 else {
-                    yValue = i * pieceHeight2;
+                    yValue = i * pieceHeight;
                 }
 
-//                xValue = j * pieceWidth2;
-//                yValue = i * pieceHeight2;
+//                xValue = j * pieceWidth;
+//                yValue = i * pieceHeight;
 
-                Bitmap drawingBitmap = Bitmap.createBitmap(pieceWidth2,
-                        pieceHeight2, Bitmap.Config.ARGB_8888);
+                Bitmap drawingBitmap = Bitmap.createBitmap((int) pieceWidth,
+                        (int) pieceHeight, Bitmap.Config.ARGB_8888);
                 Canvas canvas = new Canvas(drawingBitmap);
                 Paint paint = new Paint();
 
                 //final float scale = DensityUtil.getScale(PuzzleApplication.getAppContext());
-                final float scale = (float) pieceWidth2 / bmcover[k].getWidth();
+                final float scale = pieceWidth / bmcover[k].getWidth();
                 Matrix matrix = new Matrix();
                 matrix.setScale(scale, scale);
-                //canvas.drawBitmap(bmcover[k], 0, 0, paint);
                 canvas.drawBitmap(bmcover[k], matrix, paint);
+//                canvas.drawBitmap(bmcover[k], 0, 0, paint);
+
+                float width = pieceWidth;
+                float height = pieceHeight;
+                if(i != level - 1){
+                    height += pieceHeight * 0.25f;
+                }
+                if(j != 0){
+                    width += pieceWidth * 0.25f;
+                }
 
                 paint.setXfermode(pdf);
-                piece.bitmap = Bitmap.createBitmap(bitmap, xValue, yValue, pieceWidth2, pieceHeight2);
+                piece.bitmap = Bitmap.createBitmap(
+                        bitmap,
+                        (int) xValue, (int) yValue,
+                        (int) width, (int) height);
+
                 canvas.drawBitmap(piece.bitmap, 0, 0, paint);
                 piece.bitmap = drawingBitmap;
                 pieces.add(piece);

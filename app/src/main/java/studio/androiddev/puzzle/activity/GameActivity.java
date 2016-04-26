@@ -215,10 +215,17 @@ public class GameActivity extends BaseActivity {
         try {
 
             // TODO: 2016/4/24 这里切割图片有bug 需要继续优化算法
-            IPL = ImageSplitter.split(mBitmap, PuzzleApplication.getLevel(),
-                    DensityUtil.dip2px(GameActivity.this, DISH_WIDTH),
-                    DensityUtil.dip2px(GameActivity.this, DISH_HEIGHT));
-
+            //IPL = ImageSplitter.split(mBitmap, PuzzleApplication.getLevel(), DISH_WIDTH, DISH_HEIGHT);
+            int dishWidth = DensityUtil.dip2px(PuzzleApplication.getAppContext(), DISH_WIDTH);
+            int dishHeight = DensityUtil.dip2px(PuzzleApplication.getAppContext(), DISH_HEIGHT);
+            Bitmap tempBitmap = BitmapUtils.createNoRecycleScaleBitmap(
+                    mBitmap,
+                    dishWidth,
+                    dishHeight);
+            IPL = ImageSplitter.split(tempBitmap, PuzzleApplication.getLevel(),
+                    dishWidth,
+                    dishHeight);
+            tempBitmap.recycle();
             Log.d(TAG, "split finish");
 
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -232,6 +239,7 @@ public class GameActivity extends BaseActivity {
                 for (int j = 0; j < mLevel; j++) {
                     DragImageView imageView = new DragImageView(this);
                     imageView.setLayoutParams(layoutParams);
+                    //imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
                     imageView.setImageBitmap(IPL.get(j + i * mLevel).bitmap);
 
                     imageView.setIndex(j + i * mLevel);

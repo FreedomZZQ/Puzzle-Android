@@ -3,10 +3,20 @@ package studio.androiddev.puzzle.utils;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 
 import java.io.FileNotFoundException;
 
 public class BitmapUtils {
+
+    public static Bitmap scaleBitmap(Bitmap bitmap, float scale) {
+        Matrix matrix = new Matrix();
+        matrix.postScale(scale, scale);
+        return Bitmap.createBitmap(bitmap, 0, 0,
+                bitmap.getWidth(),
+                bitmap.getHeight(),
+                matrix, true);
+    }
 
     public static Bitmap decodeSampledBitmapFromResources(Resources res, int resId,
                                                           int reqWidth, int reqHeight){
@@ -36,12 +46,18 @@ public class BitmapUtils {
     }
 
 
+
+    public static Bitmap createNoRecycleScaleBitmap(Bitmap src, int dstWidth,
+                                           double dstHeight) {
+        int k=(int) dstHeight;
+        return Bitmap.createScaledBitmap(src, dstWidth, k, true);
+    }
     //如果是放大图片，filter决定是否平滑，如果是缩小图片，filter无影响
     public static Bitmap createScaleBitmap(Bitmap src, int dstWidth,
                                            double dstHeight) {
         int k=(int) dstHeight;
         Bitmap dst = Bitmap.createScaledBitmap(src, dstWidth, k, true);
-        if (src != dst) { // 如果没有缩放，那么不回收
+        if (src != dst) { //如果没有缩放，那么不回收
             src.recycle(); // 释放Bitmap的native像素数组
         }
         return dst;
@@ -56,6 +72,7 @@ public class BitmapUtils {
         }
         return dst;
     }
+
 
     // ��Resources�м���ͼƬ
     public Bitmap decodeSampledBitmapFromPath(String url,  int reqWidth, int reqHeight,boolean change)
