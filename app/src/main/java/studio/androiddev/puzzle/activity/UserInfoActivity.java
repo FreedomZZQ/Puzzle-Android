@@ -338,6 +338,7 @@ public class UserInfoActivity extends BaseActivity {
             } else {
                 User mReUser = (User) data.getSerializableExtra("reuser");
                 user_login = mReUser;
+                PuzzleApplication.setmUser(mReUser);
             }
 
         }
@@ -393,7 +394,7 @@ public class UserInfoActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_changePwd:
-                ChangePwdActivity.actionStart(UserInfoActivity.this, user_login);
+                ChangePwdActivity.actionStart(UserInfoActivity.this);
                 break;
             case R.id.btn_exitAccount:
                 LoginActivity.actionStart(UserInfoActivity.this);
