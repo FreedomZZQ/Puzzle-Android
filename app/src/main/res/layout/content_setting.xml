@@ -55,6 +55,17 @@
                 android:textColor="@color/fontGrey"/>
 
         </LinearLayout>
+
+        <Button
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:id="@+id/levelChooseButton"
+            android:layout_marginStart="60dp"
+            android:text="3 X 3"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:background="@drawable/button_shape"
+            android:layout_gravity="center_vertical" />
         
     </LinearLayout>
 
