@@ -15,4 +15,8 @@
     <color name="white">#ffffff</color>
     <color name="dishGrey">#e0e0e0</color>
     <color name="dishShadowGrey">#c4c4c4</color>
+    <color name="personGrey">#e6e6e6</color>
+    <color name="personGreyDark">#dcdcdc</color>
+    <color name="personTextColor">#b8b8b8</color>
+    <color name="personEditColor">#737373</color>
 </resources>

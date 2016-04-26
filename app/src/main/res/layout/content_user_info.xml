@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="studio.androiddev.puzzle.activity.SettingActivity"
+    tools:showIn="@layout/activity_user_info">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/person_background"
+        android:orientation="horizontal"
+        android:layout_margin="20dp"
+        android:padding="15dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/fresco_logo"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_launcher"/>
+
+
+            <EditText
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:id="@+id/et_nickname"
+                android:hint="nickname"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="5dp"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:textColor="@color/personEditColor"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginStart="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="账号"
+                    android:gravity="center"
+                    android:textColor="@color/personTextColor"
+                    android:layout_marginEnd="5dp"/>
+
+                <EditText
+                    android:id="@+id/met_phone_userinfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/personEditColor"
+                    android:maxLines="1"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="邮箱"
+                    android:gravity="center"
+                    android:textColor="@color/personTextColor"
+                    android:layout_marginEnd="5dp"/>
+
+                <EditText
+                    android:id="@+id/et_mail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/personEditColor"
+                    android:maxLines="1"
+                    android:singleLine="true"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="排名"
+                    android:gravity="center"
+                    android:textColor="@color/personTextColor"
+                    android:layout_marginEnd="5dp"/>
+
+                <EditText
+                    android:id="@+id/et_rank"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/personEditColor"
+                    android:maxLines="1"
+                    android:singleLine="true"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/person_background"
+        android:orientation="vertical"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="比赛记录"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:gravity="center"/>
+
+        <ListView
+            android:id="@+id/lv_record"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+
+            />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btn_changePwd"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@mipmap/change_pwd"/>
+
+    <ImageButton
+        android:id="@+id/btn_exitAccount"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@mipmap/logoff"/>
+
+
+</LinearLayout>
