@@ -2,8 +2,8 @@ package studio.androiddev.puzzle.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.Date;
@@ -20,10 +20,7 @@ import studio.androiddev.puzzle.utils.SecurityUtils;
 
 public class RegisterActivity extends BaseActivity {
 
-//    Button mbtn_reg;
-//    EditText met_phone;
-//    EditText met_pwd;
-//    EditText met_pwd_confirm;
+
     @Bind(R.id.et_phone_reg)
     EditText etPhoneReg;
     @Bind(R.id.et_pwd_register)
@@ -31,24 +28,13 @@ public class RegisterActivity extends BaseActivity {
     @Bind(R.id.et_pwd_confirm_register)
     EditText etPwdConfirmRegister;
     @Bind(R.id.btn_register_res)
-    Button btnRegisterRes;
+    ImageButton btnRegisterRes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
-//        initView();
-
-//        mbtn_reg.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//
-//
-//
-//            }
-//        });
 
     }
 
@@ -73,12 +59,6 @@ public class RegisterActivity extends BaseActivity {
         });
     }
 
-//    private void initView() {
-//        mbtn_reg = (Button) findViewById(R.id.btn_register_res);
-//        met_phone = (EditText) findViewById(R.id.et_phone_reg);
-//        met_pwd = (EditText) findViewById(R.id.et_pwd_register);
-//        met_pwd_confirm = (EditText) findViewById(R.id.et_pwd_confirm_register);
-//    }
 
     @OnClick(R.id.btn_register_res)
     public void onClick() {
