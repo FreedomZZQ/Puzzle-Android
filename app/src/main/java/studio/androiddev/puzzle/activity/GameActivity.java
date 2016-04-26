@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -90,6 +91,7 @@ public class GameActivity extends BaseActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         EventBus.getDefault().register(this);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         gameTimer = new GameTimer(timeHandler);
 
         // TODO: 2016/4/22 这里想办法把初始化放到子线程
@@ -253,6 +255,15 @@ public class GameActivity extends BaseActivity {
             progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
             gameContainer.setVisibility(show ? View.GONE : View.VISIBLE);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public static void actionStart(Context context, int picIndex) {
