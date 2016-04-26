@@ -25,13 +25,11 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.FileNotFoundException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import cn.bmob.v3.datatype.BmobDate;
 import cn.bmob.v3.listener.SaveListener;
 import studio.androiddev.puzzle.PuzzleApplication;
 import studio.androiddev.puzzle.R;
@@ -97,10 +95,7 @@ public class GameActivity extends BaseActivity {
         EventBus.getDefault().register(this);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         gameTimer = new GameTimer(timeHandler);
-<<<<<<< HEAD
-=======
 
->>>>>>> 8402f1e2f36b311ce642c7f164878bd6781fcbce
         EventBus.getDefault().post(new DishManagerInitStartEvent());
         initialization();
         EventBus.getDefault().post(new DishManagerInitFinishEvent());
@@ -210,13 +205,9 @@ public class GameActivity extends BaseActivity {
 
         try {
 
-<<<<<<< HEAD
-            List<ImagePiece> IPL = ImageSplitter.split(mBitmap, mLevel, DensityUtil.dip2px(GameActivity.this, DISH_WIDTH),
-=======
             // TODO: 2016/4/24 这里切割图片有bug 需要继续优化算法
             List<ImagePiece> IPL = ImageSplitter.split(mBitmap, PuzzleApplication.getLevel(),
                     DensityUtil.dip2px(GameActivity.this, DISH_WIDTH),
->>>>>>> 8402f1e2f36b311ce642c7f164878bd6781fcbce
                     DensityUtil.dip2px(GameActivity.this, DISH_HEIGHT));
 
 //            List<ImagePiece> IPL = ImageSplitter.split(mBitmap, mLevel, DISH_WIDTH, DISH_HEIGHT);
