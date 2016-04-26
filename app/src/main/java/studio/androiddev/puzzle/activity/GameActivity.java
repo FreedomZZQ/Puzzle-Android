@@ -113,8 +113,8 @@ public class GameActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
 
-        //Intent intent = new Intent(GameActivity.this, MusicServer.class);
-        //startService(intent);
+        Intent intent = new Intent(GameActivity.this, MusicServer.class);
+        startService(intent);
 
     }
 
@@ -126,8 +126,8 @@ public class GameActivity extends BaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        //Intent intent = new Intent(GameActivity.this, MusicServer.class);
-        //stopService(intent);
+        Intent intent = new Intent(GameActivity.this, MusicServer.class);
+        stopService(intent);
 
     }
 
