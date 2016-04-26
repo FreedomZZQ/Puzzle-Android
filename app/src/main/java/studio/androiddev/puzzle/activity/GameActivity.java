@@ -30,6 +30,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.bmob.v3.listener.SaveListener;
 import studio.androiddev.puzzle.PuzzleApplication;
 import studio.androiddev.puzzle.R;
 import studio.androiddev.puzzle.bgm.MusicServer;
@@ -41,6 +42,7 @@ import studio.androiddev.puzzle.event.GameSuccessEvent;
 import studio.androiddev.puzzle.event.PieceMoveSuccessEvent;
 import studio.androiddev.puzzle.imagesplit.ImagePiece;
 import studio.androiddev.puzzle.imagesplit.ImageSplitter;
+import studio.androiddev.puzzle.model.Record;
 import studio.androiddev.puzzle.utils.BitmapUtils;
 import studio.androiddev.puzzle.utils.DensityUtil;
 import studio.androiddev.puzzle.utils.GameTimer;
@@ -97,6 +99,7 @@ public class GameActivity extends BaseActivity {
         EventBus.getDefault().post(new DishManagerInitStartEvent());
         initialization();
         EventBus.getDefault().post(new DishManagerInitFinishEvent());
+
     }
 
     private void refreshTimeText(){
@@ -148,9 +151,28 @@ public class GameActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GameSuccessEvent event) {
-        // TODO: 2016/4/24 游戏胜利的逻辑 根据结束时的时间更新排行
         Toast.makeText(GameActivity.this, "Congratulations!", Toast.LENGTH_SHORT).show();
         gameTimer.stopTimer();
+        Record eTemp=new Record();
+
+        eTemp.setPhoneNum(PuzzleApplication.getmUser().getPhoneNum());
+        eTemp.setType(PuzzleApplication.getLevel()+"");
+        eTemp.setTime(timeText.getText().toString());
+        eTemp.setPic_url(PuzzleApplication.getmUser().getImgUrl());
+        eTemp.setNickname(PuzzleApplication.getmUser().getNickName());
+
+        eTemp.save(GameActivity.this, new SaveListener() {
+            @Override
+            public void onSuccess() {
+                Log.i("main","数据记录保存成功");
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                Log.e("main","数据记录保存失败"+s);
+            }
+        });
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

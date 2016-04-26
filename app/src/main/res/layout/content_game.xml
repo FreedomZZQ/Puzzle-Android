@@ -28,13 +28,13 @@
         <ImageView
             android:layout_width="320dp"
             android:layout_height="325dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="15dp"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp"
+            android:paddingStart="15dp"
+            android:paddingBottom="20dp"
+            android:paddingEnd="15dp"
+            android:paddingTop="15dp"
             android:id="@+id/dish"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/gamebg"
+            android:background="@drawable/dish_background"
             android:layout_gravity="center_horizontal"/>
 
 
