@@ -12,6 +12,7 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import studio.androiddev.puzzle.PuzzleApplication;
 import studio.androiddev.puzzle.R;
 
 public class MainActivity extends BaseActivity {
@@ -39,11 +40,8 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-<<<<<<< HEAD
-        PuzzleApplication.initDishManager(4);
+//        PuzzleApplication.initDishManager(4);
 
-=======
->>>>>>> 6eee8007d0fe90ba14c51af7c4a31c77c485e9a4
     }
 
     @Override

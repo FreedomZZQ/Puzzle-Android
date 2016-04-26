@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    android:background="#dad6d6">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+
+        <ImageView
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/iv_user_pic"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tv_nickname_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="haze"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:layout_marginLeft="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="end"
+            android:layout_marginEnd="10dp">
+
+            <TextView
+                android:id="@+id/tv_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4 x 4"
+                android:textSize="20sp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                />
+
+            <TextView
+                android:id="@+id/tv_gametime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="02:30"
+                android:textSize="20sp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+    
+    <TextView
+        android:id="@+id/tv_uptime"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:text="2016-2-2 14:00:01"
+        android:gravity="end"
+        android:layout_marginEnd="5dp"/>
+
+</LinearLayout>

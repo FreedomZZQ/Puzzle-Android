@@ -37,7 +37,9 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 import studio.androiddev.puzzle.PuzzleApplication;
@@ -87,16 +89,23 @@ public class UserInfoActivity extends BaseActivity {
         initView();//实例化控件
         user_login = PuzzleApplication.getmUser();
         setInfo();//为各个控件填充信息
-        mRecordSet = new ArrayList<>();
-        for (int i = 1; i < 7; i++) {
-            Record temp = new Record();
-            String type_t = i + " x " + i;
-            temp.setType(type_t);
-            temp.setTime("1：30");
-            mRecordSet.add(temp);
-        }
-        mAdapter = new RecordAdapter(mRecordSet, UserInfoActivity.this);
-        lv_record.setAdapter(mAdapter);
+
+        BmobQuery<Record> query = new BmobQuery<Record>();
+        query.setLimit(20);
+        query.addWhereEqualTo("phoneNum", PuzzleApplication.getmUser().getPhoneNum());
+        query.findObjects(this, new FindListener<Record>() {
+            @Override
+            public void onSuccess(List<Record> list) {
+                mRecordSet=list;
+                mAdapter = new RecordAdapter(mRecordSet, UserInfoActivity.this);
+                lv_record.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                Log.e("main",s);
+            }
+        });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(UserInfoActivity.this);
         inflate = UserInfoActivity.this.getLayoutInflater().inflate(R.layout.layout_alertdiag, null, false);
@@ -442,7 +451,7 @@ public class UserInfoActivity extends BaseActivity {
             }
 
             viewHolder.mtv_time.setText(getItem(position).getTime());
-            viewHolder.mtv_type.setText(getItem(position).getType());
+            viewHolder.mtv_type.setText(getItem(position).getType()+" x "+getItem(position).getType());
             if (position % 2 == 0) {
                 convertView.findViewById(R.id.linearlayout_record).setBackgroundColor(Color.GRAY);
             }
