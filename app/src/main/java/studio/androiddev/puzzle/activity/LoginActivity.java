@@ -14,7 +14,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 import studio.androiddev.puzzle.PuzzleApplication;
@@ -22,7 +21,6 @@ import studio.androiddev.puzzle.R;
 import studio.androiddev.puzzle.model.User;
 import studio.androiddev.puzzle.utils.RegExUtil;
 import studio.androiddev.puzzle.utils.SecurityUtils;
-import studio.androiddev.puzzle.utils.StaticValue;
 
 public class LoginActivity extends BaseActivity {
     @Bind(R.id.et_phone)
@@ -37,7 +35,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bmob.initialize(this, StaticValue.bmobId);
+//        Bmob.initialize(this, StaticValue.bmobId);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
