@@ -104,7 +104,7 @@ public class GameActivity extends BaseActivity {
 
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void refreshTimeText() {
+    public void refreshTimeText(TimeEvent event) {
         time++;
 
         int curminute = time / 60;
@@ -152,6 +152,11 @@ public class GameActivity extends BaseActivity {
             }
             IPL.clear();
             IPL = null;
+        }
+
+        if(gameTimer != null){
+            gameTimer.recycle();
+            gameTimer = null;
         }
 
         System.gc();
@@ -340,6 +345,7 @@ public class GameActivity extends BaseActivity {
         public StaticHandler(Activity activity){
             mActivity = new WeakReference<Activity>(activity);
         }
+
 
         @Override
         public void handleMessage(Message msg){

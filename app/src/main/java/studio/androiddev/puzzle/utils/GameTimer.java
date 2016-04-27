@@ -20,6 +20,16 @@ public class GameTimer {
     private int what;
     private boolean mTimerStart = false;
 
+    public void recycle(){
+        stopTimer();
+        mTimer = null;
+        mTimerTask = null;
+        for(Handler handler : mHandler){
+            handler = null;
+        }
+        mHandler = null;
+    }
+
     public GameTimer(Handler... handler){
         this.mHandler = handler;
         this.what = MESSAGE_TIMER;
@@ -45,7 +55,7 @@ public class GameTimer {
             mTimerTask.cancel();
             mTimerTask = null;
         }
-
+        mTimer.cancel();
 
     }
 
