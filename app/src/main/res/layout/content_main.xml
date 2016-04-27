@@ -1,58 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingTop="50dp"
     android:orientation="vertical"
-    tools:context=".activity.MainActivity">
+    android:id="@+id/buttonGroup"
+    tools:context=".activity.MainActivity"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_main">
 
-    <LinearLayout
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerInParent="true"
-        android:id="@+id/buttonGroup">
+        android:id="@+id/beginButton"
+        android:background="@mipmap/button_begin"
+        android:contentDescription="Begin"
+        android:layout_marginBottom="@dimen/main_buttons_margin"
+        android:layout_marginTop="@dimen/main_buttons_margin"
+        android:layout_gravity="center_horizontal"/>
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/beginButton"
-            android:background="@mipmap/button_begin"
-            android:contentDescription="Begin"
-            android:layout_marginBottom="@dimen/main_buttons_margin"
-            android:layout_marginTop="@dimen/main_buttons_margin"/>
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rankButton"
+        android:background="@mipmap/button_rank"
+        android:contentDescription="Rank"
+        android:layout_marginBottom="@dimen/main_buttons_margin"
+        android:layout_marginTop="@dimen/main_buttons_margin"
+        android:layout_gravity="center_horizontal"/>
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/rankButton"
-            android:background="@mipmap/button_rank"
-            android:contentDescription="Rank"
-            android:layout_marginBottom="@dimen/main_buttons_margin"
-            android:layout_marginTop="@dimen/main_buttons_margin"/>
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/settingButton"
+        android:background="@mipmap/button_setting"
+        android:contentDescription="Setting"
+        android:layout_marginBottom="@dimen/main_buttons_margin"
+        android:layout_marginTop="@dimen/main_buttons_margin"
+        android:layout_gravity="center_horizontal"/>
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/settingButton"
-            android:background="@mipmap/button_setting"
-            android:contentDescription="Setting"
-            android:layout_marginBottom="@dimen/main_buttons_margin"
-            android:layout_marginTop="@dimen/main_buttons_margin"/>
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/exitButton"
+        android:background="@mipmap/button_exit"
+        android:contentDescription="Exit"
+        android:layout_marginBottom="@dimen/main_buttons_margin"
+        android:layout_marginTop="@dimen/main_buttons_margin"
+        android:layout_gravity="center_horizontal"/>
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/exitButton"
-            android:background="@mipmap/button_exit"
-            android:contentDescription="Exit"
-            android:layout_marginBottom="@dimen/main_buttons_margin"
-            android:layout_marginTop="@dimen/main_buttons_margin"/>
+</LinearLayout>
 
-    </LinearLayout>
 
-</RelativeLayout>

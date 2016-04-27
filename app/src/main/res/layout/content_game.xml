@@ -17,9 +17,6 @@
         android:layout_centerInParent="true"
         android:visibility="gone" />
 
-
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,23 +36,11 @@
             android:layout_gravity="center_horizontal"/>
 
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <ViewStub
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/finishImage"
-            android:background="@mipmap/finish"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center_horizontal"
-            android:visibility="gone"/>
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/againButton"
-            android:layout_marginBottom="20dp"
-            android:background="@mipmap/again"
-            android:layout_gravity="center_horizontal"
-            android:visibility="gone"/>
+            android:id="@+id/success_stub"
+            android:layout="@layout/game_success" />
 
 
         <HorizontalScrollView

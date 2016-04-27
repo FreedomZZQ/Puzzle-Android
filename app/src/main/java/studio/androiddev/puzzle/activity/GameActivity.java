@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -33,7 +34,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.bmob.v3.listener.SaveListener;
 import studio.androiddev.puzzle.PuzzleApplication;
 import studio.androiddev.puzzle.R;
@@ -67,10 +67,6 @@ public class GameActivity extends BaseActivity {
     LinearLayout gameContainer;
     @Bind(R.id.timeText)
     TextView timeText;
-    @Bind(R.id.finishImage)
-    ImageView finishImage;
-    @Bind(R.id.againButton)
-    ImageButton againButton;
     @Bind(R.id.viewContainer)
     HorizontalScrollView viewContainer;
 
@@ -201,8 +197,19 @@ public class GameActivity extends BaseActivity {
 
     private void showSuccess() {
         viewContainer.setVisibility(View.GONE);
+        View successContainer = ((ViewStub) findViewById(R.id.success_stub)).inflate();
+        ImageView finishImage = (ImageView) successContainer.findViewById(R.id.finishImage);
+        ImageButton againButton = (ImageButton) successContainer.findViewById(R.id.againButton);
+
         finishImage.setVisibility(View.VISIBLE);
         againButton.setVisibility(View.VISIBLE);
+
+        againButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 
@@ -331,11 +338,6 @@ public class GameActivity extends BaseActivity {
         Intent intent = new Intent(context, GameActivity.class);
         intent.putExtra(PIC_INDEX, picIndex);
         context.startActivity(intent);
-    }
-
-    @OnClick(R.id.againButton)
-    public void onClick() {
-        finish();
     }
 
     public static class StaticHandler extends Handler {
