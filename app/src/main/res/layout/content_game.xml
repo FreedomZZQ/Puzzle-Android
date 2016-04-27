@@ -18,6 +18,8 @@
         android:visibility="gone" />
 
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,17 +33,36 @@
             android:paddingStart="15dp"
             android:paddingBottom="20dp"
             android:paddingEnd="15dp"
-            android:paddingTop="15dp"
+            android:paddingTop="20dp"
             android:id="@+id/dish"
-            android:layout_marginBottom="20dp"
             android:background="@drawable/dish_background"
             android:layout_gravity="center_horizontal"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/finishImage"
+            android:background="@mipmap/finish"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/againButton"
+            android:layout_marginBottom="20dp"
+            android:background="@mipmap/again"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"/>
 
 
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:id="@+id/viewContainer">
+            android:id="@+id/viewContainer"
+            android:layout_marginTop="20dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"

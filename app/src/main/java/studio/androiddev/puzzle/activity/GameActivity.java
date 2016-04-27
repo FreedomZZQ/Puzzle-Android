@@ -3,6 +3,7 @@ package studio.androiddev.puzzle.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,22 +15,25 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.FileNotFoundException;
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.bmob.v3.listener.SaveListener;
 import studio.androiddev.puzzle.PuzzleApplication;
 import studio.androiddev.puzzle.R;
@@ -40,6 +44,7 @@ import studio.androiddev.puzzle.event.DishManagerInitFinishEvent;
 import studio.androiddev.puzzle.event.DishManagerInitStartEvent;
 import studio.androiddev.puzzle.event.GameSuccessEvent;
 import studio.androiddev.puzzle.event.PieceMoveSuccessEvent;
+import studio.androiddev.puzzle.event.TimeEvent;
 import studio.androiddev.puzzle.imagesplit.ImagePiece;
 import studio.androiddev.puzzle.imagesplit.ImageSplitter;
 import studio.androiddev.puzzle.model.Record;
@@ -62,19 +67,14 @@ public class GameActivity extends BaseActivity {
     LinearLayout gameContainer;
     @Bind(R.id.timeText)
     TextView timeText;
+    @Bind(R.id.finishImage)
+    ImageView finishImage;
+    @Bind(R.id.againButton)
+    ImageButton againButton;
+    @Bind(R.id.viewContainer)
+    HorizontalScrollView viewContainer;
 
-    private Handler timeHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case GameTimer.MESSAGE_TIMER:
-                    refreshTimeText();
-                    break;
-
-            }
-        }
-    };
+    private StaticHandler timeHandler = new StaticHandler(GameActivity.this);
     private GameTimer gameTimer;
     private int time = 0;
 
@@ -103,8 +103,8 @@ public class GameActivity extends BaseActivity {
         EventBus.getDefault().post(new DishManagerInitFinishEvent());
 
     }
-
-    private void refreshTimeText(){
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshTimeText() {
         time++;
 
         int curminute = time / 60;
@@ -140,12 +140,21 @@ public class GameActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        mBitmap.recycle();
-        if(IPL != null){
-            for(ImagePiece imagePiece : IPL){
-                imagePiece.recycleBitmap();
-            }
+        if(mBitmap != null && !mBitmap.isRecycled()){
+            mBitmap.recycle();
         }
+
+        dm.recycle();
+
+        if (IPL != null) {
+            for (int i = 0; i < IPL.size(); i++) {
+                IPL.get(i).recycleBitmap();
+            }
+            IPL.clear();
+            IPL = null;
+        }
+
+        System.gc();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -159,12 +168,12 @@ public class GameActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(GameSuccessEvent event) {
-        Toast.makeText(GameActivity.this, "Congratulations!", Toast.LENGTH_SHORT).show();
+
         gameTimer.stopTimer();
-        Record eTemp=new Record();
+        Record eTemp = new Record();
 
         eTemp.setPhoneNum(PuzzleApplication.getmUser().getPhoneNum());
-        eTemp.setType(PuzzleApplication.getLevel()+"");
+        eTemp.setType(PuzzleApplication.getLevel() + "");
         eTemp.setTime(timeText.getText().toString());
         eTemp.setPic_url(PuzzleApplication.getmUser().getImgUrl());
         eTemp.setNickname(PuzzleApplication.getmUser().getNickName());
@@ -172,14 +181,23 @@ public class GameActivity extends BaseActivity {
         eTemp.save(GameActivity.this, new SaveListener() {
             @Override
             public void onSuccess() {
-                Log.i("main","数据记录保存成功");
+                Log.i("main", "数据记录保存成功");
             }
 
             @Override
             public void onFailure(int i, String s) {
-                Log.e("main","数据记录保存失败"+s);
+                Log.e("main", "数据记录保存失败" + s);
             }
         });
+
+        showSuccess();
+
+    }
+
+    private void showSuccess() {
+        viewContainer.setVisibility(View.GONE);
+        finishImage.setVisibility(View.VISIBLE);
+        againButton.setVisibility(View.VISIBLE);
 
     }
 
@@ -214,7 +232,7 @@ public class GameActivity extends BaseActivity {
 
         try {
 
-            // TODO: 2016/4/24 这里切割图片有bug 需要继续优化算法
+            // TODO: 2016/4/27 裁剪算法优化基本完成，尚有几像素的偏差，可能是int到float强制转换的精度损失
             //IPL = ImageSplitter.split(mBitmap, PuzzleApplication.getLevel(), DISH_WIDTH, DISH_HEIGHT);
             int dishWidth = DensityUtil.dip2px(PuzzleApplication.getAppContext(), DISH_WIDTH);
             int dishHeight = DensityUtil.dip2px(PuzzleApplication.getAppContext(), DISH_HEIGHT);
@@ -310,4 +328,31 @@ public class GameActivity extends BaseActivity {
         context.startActivity(intent);
     }
 
+    @OnClick(R.id.againButton)
+    public void onClick() {
+        finish();
+    }
+
+    public static class StaticHandler extends Handler {
+
+        private final WeakReference<Activity> mActivity;
+
+        public StaticHandler(Activity activity){
+            mActivity = new WeakReference<Activity>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg){
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case GameTimer.MESSAGE_TIMER:
+                    EventBus.getDefault().post(new TimeEvent());
+                    //refreshTimeText();
+                    break;
+
+            }
+        }
+    }
 }
+
+

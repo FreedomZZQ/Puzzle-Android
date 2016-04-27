@@ -3,8 +3,8 @@
     <color name="colorPrimary">#ff9000</color>
     <color name="colorPrimaryDark">#f27d00</color>
     <color name="colorAccent">#dcdcdc</color>
-    <color name="mdarklight">#60282828</color>
-    <color name="mgreyshade">#30282828</color>
+    <color name="mdarklight">#60ffffff</color>
+    <color name="mgreyshade">#30ffffff</color>
     <color name="themeYellow">#ff9000</color>
     <color name="themeGreen">#8ad520</color>
     <color name="themeBlue">#3383e6</color>
@@ -20,4 +20,5 @@
     <color name="personGreyDark">#dcdcdc</color>
     <color name="personTextColor">#b8b8b8</color>
     <color name="personEditColor">#737373</color>
+    <color name="transparent">#00000000</color>
 </resources>

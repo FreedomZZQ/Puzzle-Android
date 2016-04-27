@@ -45,24 +45,24 @@ public class DishManager{
     private static int DISH_WIDTH = 300;
 
     //基本款遮罩拼块
-    private static Bitmap[] bmcover = new Bitmap[9];
-    public static int COVER_CENTER = 0;
-    public static int COVER_TOP = 1;
-    public static int COVER_BOTTOM = 2;
-    public static int COVER_LEFT = 3;
-    public static int COVER_RIGHT = 4;
-    public static int COVER_TOP_LEFT = 5;
-    public static int COVER_TOP_RIGHT = 6;
-    public static int COVER_BOTTOM_LEFT = 7;
-    public static int COVER_BOTTOM_RIGHT = 8;
+    //private static Bitmap[] bmcover = new Bitmap[9];
+    public static final int COVER_CENTER = 0;
+    public static final int COVER_TOP = 1;
+    public static final int COVER_BOTTOM = 2;
+    public static final int COVER_LEFT = 3;
+    public static final int COVER_RIGHT = 4;
+    public static final int COVER_TOP_LEFT = 5;
+    public static final int COVER_TOP_RIGHT = 6;
+    public static final int COVER_BOTTOM_LEFT = 7;
+    public static final int COVER_BOTTOM_RIGHT = 8;
     //拼块凹凸半径
-    private float r;
+    private static float r;
     //拼块内的矩形长宽
-    private float rectWidth;
-    private float rectHeight;
+    private static float rectWidth;
+    private static float rectHeight;
     //拼块的长宽
-    float width;
-    float height;
+    static float width;
+    static float height;
 
     public DishManager(int level){
         mLevel = level;
@@ -70,8 +70,34 @@ public class DishManager{
         mLeftSize = mSize;
         mIndex = new boolean[mSize];
         for(int i = 0; i < mSize; i++) mIndex[i] = false;
+
+        p = new Paint();
+        p.setColor(Color.RED);
+
+        pOut = new Paint();
+        pOut.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+        pOut.setAntiAlias(true);
+        pOut.setColor(Color.RED);
+
+        pOver = new Paint();
+        pOver.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OVER));
+        pOver.setAntiAlias(true);
+        pOver.setColor(Color.RED);
         
         initMask();
+    }
+
+    /**
+     * 游戏结束后调用，释放资源
+     */
+    public void recycle(){
+        if(mImageView != null) {
+            mImageView = null;
+        }
+        if(mBitmap != null && !mBitmap.isRecycled()){
+            mBitmap.recycle();
+        }
+
     }
 
     /**
@@ -82,7 +108,7 @@ public class DishManager{
     public void initNewGame(Bitmap bitmap, ImageView imageView){
         if(bitmap == null || imageView == null) return;
 
-        if(mBitmap != null){
+        if(mBitmap != null && !mBitmap.isRecycled()){
             mBitmap.recycle();
         }
 
@@ -139,8 +165,73 @@ public class DishManager{
         mLevel = level;
     }
 
-    public static Bitmap[] getBitmapCover() {
-        return bmcover;
+//    public static Bitmap[] getBitmapCover() {
+//        return bmcover;
+//    }
+
+    public static Bitmap getCover(int index){
+        Bitmap bitmap = Bitmap.createBitmap(
+                    (int) width,
+                    (int) height,
+                    Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(bitmap);
+
+        switch (index){
+            case COVER_TOP_LEFT:
+                canvas.drawRect(0, 0, rectWidth, rectHeight, p);
+                canvas.drawArc(ovalRight, 0, 360, true, pOut);
+                canvas.drawArc(ovalBottom, 0, 360, true, pOver);
+                break;
+            case COVER_TOP:
+                canvas.drawRect(r, 0, r + rectWidth, rectHeight, p);
+                canvas.drawArc(ovalLeft, 0, 360, true, pOver);
+                canvas.drawArc(ovalBottomRight, 0, 360, true, pOver);
+                canvas.drawArc(ovalRightRight, 0, 360, true, pOut);
+                break;
+            case COVER_TOP_RIGHT:
+                canvas.drawRect(r, 0, r + rectWidth, rectHeight, p);
+                canvas.drawArc(ovalLeft, 0, 360, true, pOver);
+                canvas.drawArc(ovalBottomRight, 0, 360, true, pOver);
+                break;
+            case COVER_LEFT:
+                canvas.drawRect(0, 0, rectWidth, rectHeight, p);
+                canvas.drawArc(ovalBottom, 0, 360, true, pOver);
+                canvas.drawArc(ovalTop, 0, 360, true, pOut);
+                canvas.drawArc(ovalRight, 0, 360, true, pOut);
+                break;
+            case COVER_CENTER:
+                canvas.drawRect(r, 0, r + rectWidth, rectHeight, p);
+                canvas.drawArc(ovalTopRight, 0, 360, true, pOut);
+                canvas.drawArc(ovalRightRight, 0, 360, true, pOut);
+                canvas.drawArc(ovalLeft, 0, 360, true, pOver);
+                canvas.drawArc(ovalBottomRight, 0, 360, true, pOver);
+                break;
+            case COVER_BOTTOM_LEFT:
+                canvas.drawRect(0, 0, rectWidth, rectHeight, p);
+                canvas.drawArc(ovalTop, 0, 360, true, pOut);
+                canvas.drawArc(ovalRight, 0, 360, true, pOut);
+                break;
+            case COVER_BOTTOM:
+                canvas.drawRect(r, 0, rectWidth + r, rectHeight, p);
+                canvas.drawArc(ovalLeft, 0, 360, true, pOver);
+                canvas.drawArc(ovalTopRight, 0, 360, true, pOut);
+                canvas.drawArc(ovalRightRight, 0, 360, true, pOut);
+                break;
+            case COVER_BOTTOM_RIGHT:
+                canvas.drawRect(r, 0, rectWidth + r, rectHeight, p);
+                canvas.drawArc(ovalLeft, 0, 360, true, pOver);
+                canvas.drawArc(ovalTopRight, 0, 360, true, pOut);
+                break;
+            case COVER_RIGHT:
+                canvas.drawRect(r, 0, rectWidth + r, rectHeight, p);
+                canvas.drawArc(ovalTopRight, 0, 360, true, pOut);
+                canvas.drawArc(ovalLeft, 0, 360, true, pOver);
+                canvas.drawArc(ovalBottomRight, 0, 360, true, pOver);
+        }
+
+        canvas.save();
+        return bitmap;
     }
 
     /**
@@ -198,95 +289,114 @@ public class DishManager{
 
         width = rectWidth + r;
         height = rectHeight + r;
-        for(int i = 0; i < 9; i++){
-            bmcover[i] = Bitmap.createBitmap(
-                    (int) width,
-                    (int) height,
-                    Bitmap.Config.ARGB_8888);
-        }
 
-        Paint p = new Paint();
-        p.setColor(Color.RED);
+        ovalLeft = new RectF(0, rectHeight / 2 - r, 2 * r, rectHeight / 2 + r);
+        ovalTop = new RectF(rectWidth / 2 - r, - r, rectWidth / 2 + r, r);
+        ovalTopRight = new RectF(rectWidth / 2, - r, rectWidth / 2 + 2 * r, r);
+        ovalRight = new RectF(rectWidth - r, rectHeight / 2 - r, rectWidth + r, rectHeight / 2 + r);
+        ovalBottom = new RectF(rectWidth / 2 - r, rectHeight - r, rectWidth / 2 + r, rectHeight + r);
+        ovalRightRight = new RectF(rectWidth, rectHeight / 2 - r, rectWidth + 2 * r, rectHeight / 2 + r);
+        ovalBottomRight = new RectF(rectWidth / 2, rectHeight - r, rectWidth / 2 + 2 * r, rectHeight + r);
 
-        Paint pOut = new Paint();
-        pOut.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
-        pOut.setAntiAlias(true);
-        pOut.setColor(Color.RED);
+//        for(int i = 0; i < 9; i++){
+//            if(bmcover[i] != null){
+//                bmcover[i].recycle();
+//                bmcover[i] = null;
+//            }
+//            System.gc();
+//        }
 
-        Paint pOver = new Paint();
-        pOver.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OVER));
-        pOver.setAntiAlias(true);
-        pOver.setColor(Color.RED);
-
-        RectF ovalLeft = new RectF(0, rectHeight / 2 - r, 2 * r, rectHeight / 2 + r);
-        RectF ovalTop = new RectF(rectWidth / 2 - r, - r, rectWidth / 2 + r, r);
-        RectF ovalTopRight = new RectF(rectWidth / 2, - r, rectWidth / 2 + 2 * r, r);
-        RectF ovalRight = new RectF(rectWidth - r, rectHeight / 2 - r, rectWidth + r, rectHeight / 2 + r);
-        RectF ovalBottom = new RectF(rectWidth / 2 - r, rectHeight - r, rectWidth / 2 + r, rectHeight + r);
-        RectF ovalRightRight = new RectF(rectWidth, rectHeight / 2 - r, rectWidth + 2 * r, rectHeight / 2 + r);
-        RectF ovalBottomRight = new RectF(rectWidth / 2, rectHeight - r, rectWidth / 2 + 2 * r, rectHeight + r);
-
-        Canvas canvas = new Canvas(bmcover[COVER_TOP_LEFT]);
-        canvas.drawRect(0, 0, rectWidth, rectHeight, p);
-        canvas.drawArc(ovalRight, 0, 360, true, pOut);
-        canvas.drawArc(ovalBottom, 0, 360, true, pOver);
-        canvas.save();
-
-        canvas.setBitmap(bmcover[COVER_TOP]);
-        canvas.drawRect(r, 0, r + rectWidth, rectHeight, p);
-        canvas.drawArc(ovalLeft, 0, 360, true, pOver);
-        canvas.drawArc(ovalBottomRight, 0, 360, true, pOver);
-        canvas.drawArc(ovalRightRight, 0, 360, true, pOut);
-        canvas.save();
-
-        canvas.setBitmap(bmcover[COVER_TOP_RIGHT]);
-        canvas.drawRect(r, 0, r + rectWidth, rectHeight, p);
-        canvas.drawArc(ovalLeft, 0, 360, true, pOver);
-        canvas.drawArc(ovalBottomRight, 0, 360, true, pOver);
-        canvas.save();
-
-        canvas.setBitmap(bmcover[COVER_LEFT]);
-        canvas.drawRect(0, 0, rectWidth, rectHeight, p);
-        canvas.drawArc(ovalBottom, 0, 360, true, pOver);
-        canvas.drawArc(ovalTop, 0, 360, true, pOut);
-        canvas.drawArc(ovalRight, 0, 360, true, pOut);
-        canvas.save();
-
-        canvas.setBitmap(bmcover[COVER_CENTER]);
-        canvas.drawRect(r, 0, r + rectWidth, rectHeight, p);
-        canvas.drawArc(ovalTopRight, 0, 360, true, pOut);
-        canvas.drawArc(ovalRightRight, 0, 360, true, pOut);
-        canvas.drawArc(ovalLeft, 0, 360, true, pOver);
-        canvas.drawArc(ovalBottomRight, 0, 360, true, pOver);
-        canvas.save();
-
-        canvas.setBitmap(bmcover[COVER_BOTTOM_LEFT]);
-        canvas.drawRect(0, 0, rectWidth, rectHeight, p);
-        canvas.drawArc(ovalTop, 0, 360, true, pOut);
-        canvas.drawArc(ovalRight, 0, 360, true, pOut);
-        canvas.save();
-
-        canvas.setBitmap(bmcover[COVER_BOTTOM]);
-        canvas.drawRect(r, 0, rectWidth + r, rectHeight, p);
-        canvas.drawArc(ovalLeft, 0, 360, true, pOver);
-        canvas.drawArc(ovalTopRight, 0, 360, true, pOut);
-        canvas.drawArc(ovalRightRight, 0, 360, true, pOut);
-        canvas.save();
-
-        canvas.setBitmap(bmcover[COVER_BOTTOM_RIGHT]);
-        canvas.drawRect(r, 0, rectWidth + r, rectHeight, p);
-        canvas.drawArc(ovalLeft, 0, 360, true, pOver);
-        canvas.drawArc(ovalTopRight, 0, 360, true, pOut);
-        canvas.save();
-
-        canvas.setBitmap(bmcover[COVER_RIGHT]);
-        canvas.drawRect(r, 0, rectWidth + r, rectHeight, p);
-        canvas.drawArc(ovalTopRight, 0, 360, true, pOut);
-        canvas.drawArc(ovalLeft, 0, 360, true, pOver);
-        canvas.drawArc(ovalBottomRight, 0, 360, true, pOver);
-        canvas.save();
+//        for(int i = 0; i < 9; i++){
+//            bmcover[i] = Bitmap.createBitmap(
+//                    (int) width,
+//                    (int) height,
+//                    Bitmap.Config.ARGB_8888);
+//        }
+//
+//        Paint p = new Paint();
+//        p.setColor(Color.RED);
+//
+//        Paint pOut = new Paint();
+//        pOut.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+//        pOut.setAntiAlias(true);
+//        pOut.setColor(Color.RED);
+//
+//        Paint pOver = new Paint();
+//        pOver.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OVER));
+//        pOver.setAntiAlias(true);
+//        pOver.setColor(Color.RED);
+//
+//        RectF ovalLeft = new RectF(0, rectHeight / 2 - r, 2 * r, rectHeight / 2 + r);
+//        RectF ovalTop = new RectF(rectWidth / 2 - r, - r, rectWidth / 2 + r, r);
+//        RectF ovalTopRight = new RectF(rectWidth / 2, - r, rectWidth / 2 + 2 * r, r);
+//        RectF ovalRight = new RectF(rectWidth - r, rectHeight / 2 - r, rectWidth + r, rectHeight / 2 + r);
+//        RectF ovalBottom = new RectF(rectWidth / 2 - r, rectHeight - r, rectWidth / 2 + r, rectHeight + r);
+//        RectF ovalRightRight = new RectF(rectWidth, rectHeight / 2 - r, rectWidth + 2 * r, rectHeight / 2 + r);
+//        RectF ovalBottomRight = new RectF(rectWidth / 2, rectHeight - r, rectWidth / 2 + 2 * r, rectHeight + r);
+//
+//        Canvas canvas = new Canvas(bmcover[COVER_TOP_LEFT]);
+//        canvas.drawRect(0, 0, rectWidth, rectHeight, p);
+//        canvas.drawArc(ovalRight, 0, 360, true, pOut);
+//        canvas.drawArc(ovalBottom, 0, 360, true, pOver);
+//        canvas.save();
+//
+//        canvas.setBitmap(bmcover[COVER_TOP]);
+//        canvas.drawRect(r, 0, r + rectWidth, rectHeight, p);
+//        canvas.drawArc(ovalLeft, 0, 360, true, pOver);
+//        canvas.drawArc(ovalBottomRight, 0, 360, true, pOver);
+//        canvas.drawArc(ovalRightRight, 0, 360, true, pOut);
+//        canvas.save();
+//
+//        canvas.setBitmap(bmcover[COVER_TOP_RIGHT]);
+//        canvas.drawRect(r, 0, r + rectWidth, rectHeight, p);
+//        canvas.drawArc(ovalLeft, 0, 360, true, pOver);
+//        canvas.drawArc(ovalBottomRight, 0, 360, true, pOver);
+//        canvas.save();
+//
+//        canvas.setBitmap(bmcover[COVER_LEFT]);
+//        canvas.drawRect(0, 0, rectWidth, rectHeight, p);
+//        canvas.drawArc(ovalBottom, 0, 360, true, pOver);
+//        canvas.drawArc(ovalTop, 0, 360, true, pOut);
+//        canvas.drawArc(ovalRight, 0, 360, true, pOut);
+//        canvas.save();
+//
+//        canvas.setBitmap(bmcover[COVER_CENTER]);
+//        canvas.drawRect(r, 0, r + rectWidth, rectHeight, p);
+//        canvas.drawArc(ovalTopRight, 0, 360, true, pOut);
+//        canvas.drawArc(ovalRightRight, 0, 360, true, pOut);
+//        canvas.drawArc(ovalLeft, 0, 360, true, pOver);
+//        canvas.drawArc(ovalBottomRight, 0, 360, true, pOver);
+//        canvas.save();
+//
+//        canvas.setBitmap(bmcover[COVER_BOTTOM_LEFT]);
+//        canvas.drawRect(0, 0, rectWidth, rectHeight, p);
+//        canvas.drawArc(ovalTop, 0, 360, true, pOut);
+//        canvas.drawArc(ovalRight, 0, 360, true, pOut);
+//        canvas.save();
+//
+//        canvas.setBitmap(bmcover[COVER_BOTTOM]);
+//        canvas.drawRect(r, 0, rectWidth + r, rectHeight, p);
+//        canvas.drawArc(ovalLeft, 0, 360, true, pOver);
+//        canvas.drawArc(ovalTopRight, 0, 360, true, pOut);
+//        canvas.drawArc(ovalRightRight, 0, 360, true, pOut);
+//        canvas.save();
+//
+//        canvas.setBitmap(bmcover[COVER_BOTTOM_RIGHT]);
+//        canvas.drawRect(r, 0, rectWidth + r, rectHeight, p);
+//        canvas.drawArc(ovalLeft, 0, 360, true, pOver);
+//        canvas.drawArc(ovalTopRight, 0, 360, true, pOut);
+//        canvas.save();
+//
+//        canvas.setBitmap(bmcover[COVER_RIGHT]);
+//        canvas.drawRect(r, 0, rectWidth + r, rectHeight, p);
+//        canvas.drawArc(ovalTopRight, 0, 360, true, pOut);
+//        canvas.drawArc(ovalLeft, 0, 360, true, pOver);
+//        canvas.drawArc(ovalBottomRight, 0, 360, true, pOver);
+//        canvas.save();
 
     }
+    private static Paint p, pOut, pOver;
+    private static RectF ovalLeft, ovalTop, ovalTopRight, ovalRight, ovalBottom, ovalRightRight, ovalBottomRight;
 
     /**
      * 根据当前游戏进度生成遮罩层
@@ -306,55 +416,76 @@ public class DishManager{
             for(int j = i; j < i + mLevel; j++){
                 if(!mIndex[j]) continue;
 
+                Bitmap cover;
+
                 //最右一列
                 if((j + 1) % mLevel == 0) {
                     //右上角
-                    if(j == mLevel - 1)
-                        canvas.drawBitmap(bmcover[COVER_TOP_RIGHT], rectWidth * (mLevel - 1) - r, 0, p);
+                    if(j == mLevel - 1) {
+                        cover = getCover(COVER_TOP_RIGHT);
+                        canvas.drawBitmap(cover, rectWidth * (mLevel - 1) - r, 0, p);
+                    }
                         //右下角
-                    else if (j == mSize - 1)
+                    else if (j == mSize - 1){
+                        cover = getCover(COVER_BOTTOM_RIGHT);
                         canvas.drawBitmap(
-                                bmcover[COVER_BOTTOM_RIGHT],
+                                cover,
                                 rectWidth * (mLevel - 1) - r,
                                 rectHeight * (mLevel - 1), p);
-                    else
-                        canvas.drawBitmap(bmcover[COVER_RIGHT],
+                    }
+                    else{
+                        cover = getCover(COVER_RIGHT);
+                        canvas.drawBitmap(cover,
                                 rectWidth * (mLevel - 1) - r,
                                 rectHeight * (i / mLevel), p);
+                    }
+
                 }
                 //最左一列
                 else if(j % mLevel == 0) {
                     //左上角
-                    if(j == 0)
-                        canvas.drawBitmap(bmcover[COVER_TOP_LEFT], 0, 0, p);
+                    if(j == 0){
+                        cover = getCover(COVER_TOP_LEFT);
+                        canvas.drawBitmap(cover, 0, 0, p);
+                    }
                     //左下角
-                    if(j == mSize - mLevel + 1)
-                        canvas.drawBitmap(bmcover[COVER_BOTTOM_LEFT],
+                    if(j == mSize - mLevel + 1){
+                        cover = getCover(COVER_BOTTOM_LEFT);
+                        canvas.drawBitmap(cover,
                                 0,
                                 rectHeight * (mLevel - 1), p);
-                    else
-                        canvas.drawBitmap(bmcover[COVER_LEFT],
+                    }
+
+                    else{
+                        cover = getCover(COVER_LEFT);
+                        canvas.drawBitmap(cover,
                                 0,
                                 rectHeight * (i / mLevel), p);
+                    }
                 }
                 //最上一行
                 else if(j < mLevel){
-                    canvas.drawBitmap(bmcover[COVER_TOP],
+                    cover = getCover(COVER_TOP);
+                    canvas.drawBitmap(cover,
                             rectWidth * j - r,
                             0, p);
                 }
                 //最下一行
                 else if(j > (mSize - mLevel)){
-                    canvas.drawBitmap(bmcover[COVER_BOTTOM],
+                    cover = getCover(COVER_BOTTOM);
+                    canvas.drawBitmap(cover,
                             rectWidth * (j % mLevel) - r,
                             rectHeight * (mLevel - 1), p);
                 }
                 //中间
                 else{
-                    canvas.drawBitmap(bmcover[COVER_CENTER],
+                    cover = getCover(COVER_CENTER);
+                    canvas.drawBitmap(cover,
                             rectWidth * (j % mLevel) - r,
                             rectHeight * (i / mLevel), p);
                 }
+
+                cover.recycle();
 
             }
 

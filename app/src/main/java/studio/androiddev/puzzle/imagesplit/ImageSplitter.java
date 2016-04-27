@@ -24,7 +24,7 @@ public class ImageSplitter {
 
     public static List<ImagePiece> split(Bitmap bitmap, int level, int dishWidth, int dishHeight)
             throws FileNotFoundException {
-        Bitmap[] bmcover = DishManager.getBitmapCover();
+//        Bitmap[] bmcover = DishManager.getBitmapCover();
         List<ImagePiece> pieces = new ArrayList<>(level * level);
 
         float pieceWidth = (float) dishWidth / level;
@@ -96,10 +96,12 @@ public class ImageSplitter {
                 Paint paint = new Paint();
 
                 //final float scale = DensityUtil.getScale(PuzzleApplication.getAppContext());
-                final float scale = pieceWidth / bmcover[k].getWidth();
+                Bitmap cover = DishManager.getCover(k);
+                final float scale = pieceWidth / cover.getWidth();
                 Matrix matrix = new Matrix();
                 matrix.setScale(scale, scale);
-                canvas.drawBitmap(bmcover[k], matrix, paint);
+                canvas.drawBitmap(cover, matrix, paint);
+                cover.recycle();
 //                canvas.drawBitmap(bmcover[k], 0, 0, paint);
 
                 float width = pieceWidth;
@@ -118,11 +120,13 @@ public class ImageSplitter {
                         (int) width, (int) height);
 
                 canvas.drawBitmap(piece.bitmap, 0, 0, paint);
+                piece.bitmap.recycle();
                 piece.bitmap = drawingBitmap;
                 pieces.add(piece);
                 Log.d(TAG, "piece " + k + " draw completed");
             }
         }
+        System.gc();
 
         return pieces;
     }

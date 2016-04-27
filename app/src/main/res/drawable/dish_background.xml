@@ -9,7 +9,7 @@
     <item android:drawable="@drawable/dish_shape_top"
         android:left="10dp"
         android:right="10dp"
-        android:top="10dp"
+        android:top="15dp"
         android:bottom="15dp"/>
 
 </layer-list>
