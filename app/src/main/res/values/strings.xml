@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">拼了个图</string>
     <string name="title_activity_setting">设置</string>
-    <string name="title_activity_rank">广场</string>
+    <string name="title_activity_rank">发现</string>
     <string name="title_activity_game">游戏</string>
     <string name="title_activity_personal">个人中心</string>
     <string name="click_again_to_exit">再按一次返回键退出</string>
