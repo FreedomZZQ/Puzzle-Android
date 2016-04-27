@@ -60,7 +60,7 @@ public class LoginActivity extends BaseActivity {
                         // 登录验证逻辑函数
                         BmobQuery<User> query = new BmobQuery<User>();
                         query.addWhereEqualTo("phoneNum", phone);
-                        query.findObjects(LoginActivity.this, new FindListener<User>() {
+                        query.findObjects(PuzzleApplication.getAppContext(), new FindListener<User>() {
                             @Override
                             public void onSuccess(List<User> list) {
                                 if (list.size() == 1) {
@@ -70,8 +70,11 @@ public class LoginActivity extends BaseActivity {
                                         //登陆成功后要做三件事：
                                         //1.更新Application中的User
                                         //2.启动MainActivity
+                                        //3.清空输入框
                                         PuzzleApplication.setmUser(list.get(0));
                                         MainActivity.actionStart(LoginActivity.this);
+                                        met_phone.setText("");
+                                        met_pwd.setText("");
                                     } else {
                                         Toast.makeText(LoginActivity.this, "输入密码错误，请重新输入！", Toast.LENGTH_SHORT).show();
                                     }

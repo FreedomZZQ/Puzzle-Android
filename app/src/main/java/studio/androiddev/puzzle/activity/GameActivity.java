@@ -1,13 +1,9 @@
 package studio.androiddev.puzzle.activity;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,7 +16,6 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -41,7 +36,6 @@ import studio.androiddev.puzzle.bgm.MusicServer;
 import studio.androiddev.puzzle.dish.DishManager;
 import studio.androiddev.puzzle.dish.DragImageView;
 import studio.androiddev.puzzle.event.DishManagerInitFinishEvent;
-import studio.androiddev.puzzle.event.DishManagerInitStartEvent;
 import studio.androiddev.puzzle.event.GameSuccessEvent;
 import studio.androiddev.puzzle.event.PieceMoveSuccessEvent;
 import studio.androiddev.puzzle.event.TimeEvent;
@@ -61,8 +55,6 @@ public class GameActivity extends BaseActivity {
     ImageView dish;
     @Bind(R.id.layViewContainer)
     LinearLayout layViewContainer;
-    @Bind(R.id.progressBar)
-    ProgressBar progressBar;
     @Bind(R.id.gameContainer)
     LinearLayout gameContainer;
     @Bind(R.id.timeText)
@@ -94,7 +86,6 @@ public class GameActivity extends BaseActivity {
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         gameTimer = new GameTimer(timeHandler);
 
-        EventBus.getDefault().post(new DishManagerInitStartEvent());
         initialization();
         EventBus.getDefault().post(new DishManagerInitFinishEvent());
 
@@ -215,15 +206,8 @@ public class GameActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(DishManagerInitFinishEvent event) {
-        showProgress(false);
         gameTimer.startTimer();
     }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(DishManagerInitStartEvent event) {
-        showProgress(true);
-    }
-
 
     private void initialization() {
         Log.d(TAG, "init begin");
@@ -293,37 +277,6 @@ public class GameActivity extends BaseActivity {
         Log.d(TAG, "init finish");
     }
 
-    /**
-     * Shows the progress UI and hides the dish and the pieceContainer.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            gameContainer.setVisibility(show ? View.GONE : View.VISIBLE);
-            gameContainer.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    gameContainer.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-            progressBar.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-            gameContainer.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

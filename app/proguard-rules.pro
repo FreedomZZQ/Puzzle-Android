@@ -15,3 +15,50 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+# --------------------------ButterKnife----------------------------
+-keep class butterknife.** { *; }
+-dontwarn butterknife.internal.**
+-keep class **$$ViewBinder { *; }
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <fields>;
+}
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <methods>;
+}
+
+
+# --------------------------Bmob----------------------------
+-ignorewarnings
+
+-keepattributes Signature
+
+# 不混淆BmobSDK
+-keep class cn.bmob.v3.** {*;}
+
+# 保证继承自BmobObject、BmobUser类的JavaBean不被混淆
+-keep class * extends cn.bmob.v3.BmobObject {
+    *;
+}
+-keep class com.example.bmobexample.relation.Post{*;}
+-keep class com.example.bmobexample.relation.Comment{*;}
+
+# 如果你使用了okhttp、okio的包，请添加以下混淆代码
+-dontwarn com.squareup.okhttp.**
+-keep class com.squareup.okhttp.** { *;}
+-keep interface com.squareup.okhttp.** { *; }
+-dontwarn okio.**
+
+# 如果你需要兼容6.0系统，请不要混淆org.apache.http.legacy.jar 
+ -dontwarn android.net.compatibility.**
+ -dontwarn android.net.http.**
+ -dontwarn com.android.internal.http.multipart.**
+ -dontwarn org.apache.commons.**
+ -dontwarn org.apache.http.**
+ -keep class android.net.compatibility.**{*;}
+ -keep class android.net.http.**{*;}
+ -keep class com.android.internal.http.multipart.**{*;}
+ -keep class org.apache.commons.**{*;}
+ -keep class org.apache.http.**{*;}
