@@ -5,23 +5,25 @@
     android:orientation="vertical">
 
     <Button
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_margin="20dp"
         android:padding="5dp"
         android:textSize="18sp"
         android:id="@+id/btn_camera_changePic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="拍照获得图片"/>
+        android:text="拍照获得图片"
+        android:background="@drawable/button_background"
+        android:textColor="@color/white"/>
 
     <Button
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_margin="20dp"
         android:padding="5dp"
         android:textSize="18sp"
         android:id="@+id/btn_gallery_changePic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="从图库获取头像"/>
+        android:text="从图库获取头像"
+        android:background="@drawable/button_background"
+        android:textColor="@color/white"/>
 
 </LinearLayout>
