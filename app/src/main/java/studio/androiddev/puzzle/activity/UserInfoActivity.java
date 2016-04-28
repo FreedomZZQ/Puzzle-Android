@@ -50,6 +50,10 @@ public class UserInfoActivity extends BaseActivity {
     private static int CAMERA_REQUEST_CODE = 1;
     private static int GALLERY_REQUEST_CODE = 2;
     private static int CROP_REQUEST_CODE = 3;
+
+    private static final String IMAGE_FILE_LOCATION = "file:///sdcard/temp.jpg";//temp file
+    Uri imageUri = Uri.parse(IMAGE_FILE_LOCATION);//The Uri to store the big bitmap
+
     @Bind(R.id.fresco_logo)
     ImageView imageView;
     @Bind(R.id.et_nickname)
@@ -94,14 +98,14 @@ public class UserInfoActivity extends BaseActivity {
         query.findObjects(this, new FindListener<Record>() {
             @Override
             public void onSuccess(List<Record> list) {
-                mRecordSet=list;
+                mRecordSet = list;
                 mAdapter = new RecordAdapter(mRecordSet, UserInfoActivity.this);
                 lv_record.setAdapter(mAdapter);
             }
 
             @Override
             public void onError(int i, String s) {
-                Log.e("main",s);
+                Log.e("main", s);
             }
         });
 
@@ -117,6 +121,7 @@ public class UserInfoActivity extends BaseActivity {
                 alertDialog.show();
             }
         });
+
 
         inflate.findViewById(R.id.btn_camera_changePic).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,15 +151,42 @@ public class UserInfoActivity extends BaseActivity {
 
     private void setPicFromCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         startActivityForResult(intent, CAMERA_REQUEST_CODE);
     }
 
-    private void setInfo() {
-        met_phone.setText(user_login.getPhoneNum());
-        met_nickname.setText(user_login.getNickName());
-        met_mail.setText(user_login.getMailNum());
-        if (!user_login.getImgUrl().equals("null")) {
+    private Bitmap decodeUriAsBitmap(Uri uri) {
+        Bitmap bitmap = null;
+        try {
+            bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return bitmap;
+    }
 
+    private void cropImageUri(Uri uri, int outputX, int outputY, int requestCode) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        intent.putExtra("crop", "true");
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        intent.putExtra("outputX", outputX);
+        intent.putExtra("outputY", outputY);
+        intent.putExtra("scale", true);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        intent.putExtra("return-data", false);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        intent.putExtra("noFaceDetection", true); // no face detection
+        startActivityForResult(intent, requestCode);
+    }
+
+    private void setInfo() {
+        met_phone.setText(PuzzleApplication.getmUser().getPhoneNum());
+        met_nickname.setText(PuzzleApplication.getmUser().getNickName());
+        met_mail.setText(PuzzleApplication.getmUser().getMailNum());
+        if (!user_login.getImgUrl().equals("null")) {
 
             new Thread(new Runnable() {
                 @Override
@@ -173,64 +205,8 @@ public class UserInfoActivity extends BaseActivity {
         }
     }
 
-    //调用裁剪图片API，传入FileUri
-    private void startImageZoom(Uri uri) {
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(uri, "image/*");
-        intent.putExtra("crop", "true");
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        intent.putExtra("outputX", 800);
-        intent.putExtra("outputY", 800);
-        intent.putExtra("return-data", true);
-        startActivityForResult(intent, CROP_REQUEST_CODE);
-    }
-
-    //将 content类型uri 转换成 file类型uri
-    private Uri convertUri(Uri uri) {
-        InputStream is = null;
-        try {
-            is = getContentResolver().openInputStream(uri);
-            Bitmap bitmap = BitmapFactory.decodeStream(is);
-            is.close();
-            return saveBitmap(bitmap);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-
-    /**
-     * 将 bitmap 图片存到手机内存 并返回 file类型Uri
-     */
-    private Uri saveBitmap(Bitmap bm) {
-        File tempDir = new File(Environment.getExternalStorageDirectory() + "/com.haze.pingtugame");
-        if (!tempDir.exists()) {
-            tempDir.mkdir();
-        }
-
-        File image = new File(tempDir.getAbsolutePath() + "/logo_temp.png");
-
-        try {
-            FileOutputStream fos = new FileOutputStream(image);
-            bm.compress(Bitmap.CompressFormat.PNG, 85, fos);
-            fos.flush();
-            fos.close();
-            return Uri.fromFile(image);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     public Bitmap returnBitMap(String url) {
+
         URL myFileUrl = null;
         Bitmap bitmap = null;
         try {
@@ -264,80 +240,69 @@ public class UserInfoActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == CAMERA_REQUEST_CODE) {
-            if (data == null) {
-                return;
-            } else {
-                Bundle extras = data.getExtras();
-                if (extras != null) {
-                    Bitmap bm = extras.getParcelable("data");
-                    Uri uri = null;
-                    uri = saveBitmap(bm);
-                    startImageZoom(uri);// uri必须是file类型的Uri
-                }
-            }
+            cropImageUri(imageUri, 300, 300, CROP_REQUEST_CODE);
         } else if (requestCode == GALLERY_REQUEST_CODE) {
+
             if (data == null) {
                 return;
             }
             Uri uri = data.getData();//content类型的uri
-            startImageZoom(convertUri(uri));
+            Intent intent = new Intent("com.android.camera.action.CROP");
+            intent.setDataAndType(uri, "image/*");
+            intent.putExtra("crop", "true");
+            intent.putExtra("aspectX", 1);
+            intent.putExtra("aspectY", 1);
+            intent.putExtra("outputX", 300);
+            intent.putExtra("outputY", 300);
+            intent.putExtra("return-data", false);
+            intent.putExtra("scale", true);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+            intent.putExtra("noFaceDetection", true); // no face detection
+            startActivityForResult(intent, CROP_REQUEST_CODE);
 
         } else if (requestCode == CROP_REQUEST_CODE) {
-            if (data == null) {
-                return;
+
+            if (imageUri != null) {
+                Bitmap bitmap = decodeUriAsBitmap(imageUri);//decode bitmap
+                imageView.setImageBitmap(bitmap);
+                File tempDir = new File(Environment.getExternalStorageDirectory() + "");
+                String picPath = tempDir.getAbsolutePath() + "/temp.jpg";
+                final BmobFile bmobFile = new BmobFile(new File(picPath));
+
+                bmobFile.uploadblock(UserInfoActivity.this, new UploadFileListener() {
+                    @Override
+                    public void onSuccess() {
+
+                        user_login.setImgUrl(bmobFile.getFileUrl(UserInfoActivity.this));
+                        String obId = user_login.getObjectId();
+                        user_login.update(UserInfoActivity.this, obId, new UpdateListener() {
+                            @Override
+                            public void onSuccess() {
+                                Log.i("main", "更新头像URL成功");
+                            }
+
+                            @Override
+                            public void onFailure(int i, String s) {
+                                Log.e("main", s);
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onProgress(Integer value) {
+                        // 返回的上传进度（百分比）
+                    }
+
+                    @Override
+                    public void onFailure(int code, String msg) {
+                        Log.e("main", msg);
+                    }
+                });
+
             }
-            Bundle extra = data.getExtras();
-            Bitmap bm = extra.getParcelable("data");
-            imageView.setImageBitmap(bm);
 
-            /**
-             * 将图片存到服务器
-             */
-            File tempDir = new File(Environment.getExternalStorageDirectory() + "/com.haze.pingtugame");
-            if (!tempDir.exists()) {
-                tempDir.mkdir();
-            }
-            File image = new File(tempDir.getAbsolutePath() + "/logo_temp.png");
-            if (image.exists()) {
-                image.delete();
-            }
-            saveBitmap(bm);
-
-            String picPath = tempDir.getAbsolutePath() + "/logo_temp.png";
-            final BmobFile bmobFile = new BmobFile(new File(picPath));
-            bmobFile.uploadblock(UserInfoActivity.this, new UploadFileListener() {
-
-                @Override
-                public void onSuccess() {
-//                    Log.i("main", bmobFile.getFileUrl(UserInfoActivity.this));
-
-                    user_login.setImgUrl(bmobFile.getFileUrl(UserInfoActivity.this));
-                    String obId = user_login.getObjectId();
-                    user_login.update(UserInfoActivity.this, obId, new UpdateListener() {
-                        @Override
-                        public void onSuccess() {
-                            Log.i("main", "更新头像URL成功");
-                        }
-
-                        @Override
-                        public void onFailure(int i, String s) {
-                            Log.e("main", s);
-
-                        }
-                    });
-
-                }
-
-                @Override
-                public void onProgress(Integer value) {
-                    // 返回的上传进度（百分比）
-                }
-
-                @Override
-                public void onFailure(int code, String msg) {
-                    Log.e("main", "存储头像失败");
-                }
-            });
 
         } else if (requestCode == 1234) {
             if (data == null) {
@@ -410,7 +375,6 @@ public class UserInfoActivity extends BaseActivity {
         }
     }
 
-
     class RecordAdapter extends BaseAdapter {
 
         List<Record> mSet;
@@ -450,7 +414,7 @@ public class UserInfoActivity extends BaseActivity {
             }
 
             viewHolder.mtv_time.setText(getItem(position).getTime());
-            viewHolder.mtv_type.setText(getItem(position).getType()+" x "+getItem(position).getType());
+            viewHolder.mtv_type.setText(getItem(position).getType() + " x " + getItem(position).getType());
             if (position % 2 == 0) {
                 convertView.findViewById(R.id.linearlayout_record).setBackgroundColor(getResources().getColor(R.color.personGreyDark));
             }
@@ -464,9 +428,9 @@ public class UserInfoActivity extends BaseActivity {
         }
     }
 
-
     public static void actionStart(Context context) {
         Intent intent = new Intent(context, UserInfoActivity.class);
         context.startActivity(intent);
     }
+
 }
