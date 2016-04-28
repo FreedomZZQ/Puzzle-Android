@@ -8,7 +8,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,6 +25,8 @@ public class SettingActivity extends BaseActivity {
     Toolbar toolbar;
     @Bind(R.id.levelChooseButton)
     Button levelChooseButton;
+    @Bind(R.id.buttonShare)
+    ImageButton buttonShare;
 
     private int choosedLevel = 0;
 
@@ -58,7 +62,7 @@ public class SettingActivity extends BaseActivity {
         context.startActivity(intent);
     }
 
-    private void chooseLevel(){
+    private void chooseLevel() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(SettingActivity.this);
 
         final String[] levels = {
@@ -70,8 +74,8 @@ public class SettingActivity extends BaseActivity {
         builder.setTitle("请选择难度");
         int defaultWhich = 0;
 
-        for(int i = 0; i < levels.length; i++){
-            if(levelChooseButton.getText().toString().equals(levels[i])) {
+        for (int i = 0; i < levels.length; i++) {
+            if (levelChooseButton.getText().toString().equals(levels[i])) {
                 defaultWhich = i;
             }
         }
@@ -99,17 +103,36 @@ public class SettingActivity extends BaseActivity {
         builder.show();
     }
 
-    private void changeLevel(){
+    private void changeLevel() {
 
         int level = choosedLevel + 3;
         SharedPreferences.Editor editor = getSharedPreferences(StaticValue.SP_NAME, MODE_PRIVATE).edit();
         editor.putInt(StaticValue.SP_LEVEL, level);
-        editor.commit();
+        editor.apply();
         PuzzleApplication.setLevel(level);
     }
 
-    @OnClick(R.id.levelChooseButton)
-    public void onClick() {
-        chooseLevel();
+    private void shareAction(){
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.setting_share));
+        shareIntent.setType("text/plain");
+
+        //设置分享列表的标题，并且每次都显示分享列表
+        startActivity(Intent.createChooser(shareIntent, "分享到"));
     }
+
+    @OnClick({R.id.levelChooseButton, R.id.buttonShare})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.levelChooseButton:
+                chooseLevel();
+                break;
+            case R.id.buttonShare:
+                shareAction();
+                break;
+        }
+    }
+
+
 }
