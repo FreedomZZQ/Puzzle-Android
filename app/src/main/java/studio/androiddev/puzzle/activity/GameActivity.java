@@ -91,7 +91,7 @@ public class GameActivity extends BaseActivity {
 
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void refreshTimeText(TimeEvent event) {
+    public void onEvent(TimeEvent event) {
         time++;
 
         int curminute = time / 60;
