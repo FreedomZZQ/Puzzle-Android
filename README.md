@@ -3,7 +3,9 @@
 
 ## 简介
 **拼了个图**是一款Android平台上的拼图小游戏。  
-This repo is an awesome puzzle game on Android platform.
+This repo is an awesome puzzle game on Android platform.  
+编译源码前，请先[下载](http://7vzrj0.com1.z0.glb.clouddn.com/puzzlebgm.rar)背景音乐文件，解压放到*/app/src/main/res/raw/*目录下。  
+Before you build this repo, you should download [bgm](http://7vzrj0.com1.z0.glb.clouddn.com/puzzlebgm.rar) file and unzip it into */app/src/main/res/raw/* directory.
 ## 界面截图
 #### 登录页  
 ![](http://7vzrj0.com1.z0.glb.clouddn.com/puzzle_login.png?imageView/2/w/400)  
